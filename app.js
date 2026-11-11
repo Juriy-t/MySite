@@ -257,3 +257,29 @@ function resetParty() {
     renderParty();
   }
 }
+async function exportToPng() {
+  const captureArea = document.getElementById("captureArea");
+  const titleInput = document.getElementById("partyTitleInput").value.trim();
+  const bannerTitle = document.getElementById("bannerTitle");
+
+  bannerTitle.textContent = titleInput || "Albion Online — Сборка группы";
+  captureArea.classList.add("is-exporting");
+
+  try {
+    const canvas = await html2canvas(captureArea, {
+      backgroundColor: "#0f171e",
+      useCORS: true,
+      scale: 2 // Четкое качество (Retina)
+    });
+
+    const link = document.createElement("a");
+    link.download = (titleInput ? titleInput.replace(/\s+/g, "_") : "albion_party") + ".png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (err) {
+    alert("Не удалось создать картинку. Проверьте подключение к интернету.");
+    console.error(err);
+  } finally {
+    captureArea.classList.remove("is-exporting");
+  }
+}
