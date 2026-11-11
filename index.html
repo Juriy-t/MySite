@@ -18,46 +18,70 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-main); padding: 20px; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; }
+
+    /* Экран приветствия */
+    .welcome-screen {
+      max-width: 720px; margin: 80px auto; padding: 40px;
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; text-align: center;
+    }
+    .welcome-screen h1 { font-size: 2rem; color: var(--accent-gold); margin-bottom: 16px; }
+    .welcome-screen p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; }
+
+    button {
+      background: #1f303e; color: var(--text-main); border: 1px solid var(--border-color);
+      padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
+    }
+    button:hover { border-color: var(--accent-gold); background: #273c4d; }
+    button.primary { background: var(--accent-gold); color: #0f171e; border-color: var(--accent-gold); font-size: 1rem; }
+    button.primary:hover { background: #e5c150; }
+
+    /* Рабочая зона конструктора */
+    .builder-screen { display: none; padding: 20px; }
+    .builder-screen.active { display: block; }
 
     header {
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 15px; margin-bottom: 25px; padding-bottom: 15px;
       border-bottom: 1px solid var(--border-color);
     }
-
-    h1 { font-size: 1.5rem; color: var(--accent-gold); }
+    header h2 { color: var(--accent-gold); font-size: 1.4rem; }
     .controls { display: flex; gap: 10px; flex-wrap: wrap; }
 
-    button {
-      background: #1f303e; color: var(--text-main); border: 1px solid var(--border-color);
-      padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;
+    /* Горизонтальный ряд карточек пати */
+    .party-row {
+      display: flex; align-items: flex-start; gap: 16px;
+      overflow-x: auto; padding-bottom: 20px;
     }
-    button:hover { border-color: var(--accent-gold); background: #273c4d; }
-    button.primary { background: var(--accent-gold); color: #0f171e; border-color: var(--accent-gold); }
-    button.primary:hover { background: #e5c150; }
 
-    .board-wrapper { overflow-x: auto; padding-bottom: 15px; }
-    .board { display: grid; grid-template-columns: repeat(5, minmax(220px, 1fr)) 70px; gap: 14px; min-width: 1200px; }
+    .role-column {
+      min-width: 230px; width: 230px; display: flex; flex-direction: column; gap: 10px;
+    }
 
-    .role-header { background: var(--header-mint); color: var(--header-text); padding: 8px 10px; border-radius: 6px; }
+    .role-header {
+      background: var(--header-mint); color: var(--header-text);
+      padding: 8px 10px; border-radius: 8px; display: flex; align-items: center; gap: 6px;
+    }
     .role-header input {
       background: transparent; border: none; color: var(--header-text);
       font-weight: 700; font-size: 1rem; text-align: center; width: 100%; outline: none;
     }
-
-    .row-label {
-      background: var(--header-mint); color: var(--header-text); font-weight: 800; font-size: 1.1rem;
-      display: flex; align-items: center; justify-content: center; border-radius: 6px;
-      writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 3px;
+    .remove-role-btn {
+      background: transparent; border: none; color: #5c2323; font-weight: 900;
+      padding: 2px 6px; cursor: pointer; font-size: 0.9rem;
     }
+    .remove-role-btn:hover { background: rgba(0,0,0,0.1); border-radius: 4px; }
 
     .build-card {
-      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px;
-      padding: 12px; display: flex; flex-direction: column; gap: 10px;
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px;
     }
 
-    .equip-grid { display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 6px; justify-content: center; }
+    .equip-grid {
+      display: grid; grid-template-columns: repeat(3, 60px);
+      grid-template-rows: repeat(3, 60px); gap: 6px; justify-content: center;
+    }
 
     .slot {
       width: 60px; height: 60px; background: var(--bg-slot); border: 1px solid #304659;
@@ -69,17 +93,35 @@
     .slot.invisible { visibility: hidden; pointer-events: none; }
     .slot img { width: 100%; height: 100%; object-fit: contain; }
 
-    .swaps-section { border-top: 1px dashed var(--border-color); padding-top: 8px; }
-    .swaps-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
-    .swaps-row { display: flex; gap: 6px; justify-content: center; }
-    .swaps-row .slot { width: 52px; height: 52px; }
+    /* Настраиваемые свапы */
+    .swaps-section { border-top: 1px dashed var(--border-color); padding-top: 10px; }
+    .swaps-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; text-align: center; }
+    .swaps-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .swaps-row .slot { width: 48px; height: 48px; }
 
+    .add-swap-btn {
+      width: 48px; height: 48px; background: #121c24; border: 1px dashed #4c667d;
+      border-radius: 8px; color: var(--accent-gold); font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .add-swap-btn:hover { border-color: var(--accent-gold); background: #1a2834; }
+
+    /* Кнопка добавления новой роли (+) */
+    .add-role-card {
+      min-width: 120px; height: 340px; background: rgba(22, 34, 44, 0.5);
+      border: 2px dashed var(--border-color); border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-muted); transition: 0.2s; gap: 8px;
+    }
+    .add-role-card:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(22, 34, 44, 0.9); }
+    .add-role-card span { font-size: 2.5rem; line-height: 1; }
+
+    /* Модальное окно */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: none;
       align-items: center; justify-content: center; z-index: 100; padding: 15px;
     }
     .modal-backdrop.active { display: flex; }
-
     .modal {
       background: #182530; border: 1px solid var(--accent-gold); border-radius: 12px;
       width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
@@ -91,7 +133,6 @@
       padding: 7px 10px; border-radius: 6px; outline: none;
     }
     .modal-filters input { flex: 1; min-width: 160px; }
-
     .items-list {
       padding: 15px; overflow-y: auto; display: grid;
       grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px;
@@ -107,24 +148,36 @@
 </head>
 <body>
 
-  <header>
-    <div>
-      <h1>⚔️ Albion Party Builder</h1>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">
-        Нажмите на любой слот, чтобы выбрать экипировку. Названия ролей можно редактировать.
-      </p>
-    </div>
-    <div class="controls">
-      <button onclick="loadPreset()">Загрузить билды через скриншот</button>
-      <button onclick="clearBoard()">Очистить всё</button>
-      <button class="primary" onclick="saveBuilds()">💾 Сохранить</button>
-    </div>
-  </header>
+  <!-- ЭКРАН 1: ОПИСАНИЕ САЙТА -->
+  <div class="welcome-screen" id="welcomeScreen">
+    <h1>⚔️ Albion Party Builder</h1>
+    
+    <!-- ВСТАВЬТЕ ВАШ ТЕКСТ ОПИСАНИЯ ВНУТРИ ТЕГА <p> НИЖЕ -->
+    <p>
+      Здесь будет ваше описание сайта: для чего он создан, как собрать пати, 
+      выбрать экипировку и скачать готовую картинку для своей группы.
+    </p>
 
-  <div class="board-wrapper">
-    <div class="board" id="board"></div>
+    <button class="primary" onclick="startBuilder()">Создать пати</button>
   </div>
 
+  <!-- ЭКРАН 2: КОНСТРУКТОР -->
+  <div class="builder-screen" id="builderScreen">
+    <header>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button onclick="showWelcome()">← На главную</button>
+        <h2>Сборка группы</h2>
+      </div>
+      <div class="controls">
+        <button onclick="resetParty()">Сбросить до 1 игрока</button>
+        <button class="primary" onclick="saveBuilds()">💾 Сохранить</button>
+      </div>
+    </header>
+
+    <div class="party-row" id="partyRow"></div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ПРЕДМЕТА -->
   <div class="modal-backdrop" id="modal">
     <div class="modal">
       <div class="modal-header">
