@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Albion Online — Конструктор билдов пати</title>
+  <style>
+    :root {
+      --bg-dark: #0f171e;
+      --bg-card: #16222c;
+      --bg-slot: #0c1218;
+      --accent-gold: #d4af37;
+      --header-mint: #cde7d8;
+      --header-text: #0f171e;
+      --text-main: #e6edf3;
+      --text-muted: #8b949e;
+      --border-color: #263847;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); padding: 20px; }
+
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 15px; margin-bottom: 25px; padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h1 { font-size: 1.5rem; color: var(--accent-gold); }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    button {
+      background: #1f303e; color: var(--text-main); border: 1px solid var(--border-color);
+      padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;
+    }
+    button:hover { border-color: var(--accent-gold); background: #273c4d; }
+    button.primary { background: var(--accent-gold); color: #0f171e; border-color: var(--accent-gold); }
+    button.primary:hover { background: #e5c150; }
+
+    .board-wrapper { overflow-x: auto; padding-bottom: 15px; }
+    .board { display: grid; grid-template-columns: repeat(5, minmax(220px, 1fr)) 70px; gap: 14px; min-width: 1200px; }
+
+    .role-header { background: var(--header-mint); color: var(--header-text); padding: 8px 10px; border-radius: 6px; }
+    .role-header input {
+      background: transparent; border: none; color: var(--header-text);
+      font-weight: 700; font-size: 1rem; text-align: center; width: 100%; outline: none;
+    }
+
+    .row-label {
+      background: var(--header-mint); color: var(--header-text); font-weight: 800; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 6px;
+      writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 3px;
+    }
+
+    .build-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px;
+      padding: 12px; display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .equip-grid { display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 6px; justify-content: center; }
+
+    .slot {
+      width: 60px; height: 60px; background: var(--bg-slot); border: 1px solid #304659;
+      border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: 0.15s; overflow: hidden;
+    }
+    .slot:hover { border-color: var(--accent-gold); transform: scale(1.04); }
+    .slot.empty::after { content: attr(data-label); font-size: 9px; color: #4c667d; text-transform: uppercase; text-align: center; }
+    .slot.invisible { visibility: hidden; pointer-events: none; }
+    .slot img { width: 100%; height: 100%; object-fit: contain; }
+
+    .swaps-section { border-top: 1px dashed var(--border-color); padding-top: 8px; }
+    .swaps-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
+    .swaps-row { display: flex; gap: 6px; justify-content: center; }
+    .swaps-row .slot { width: 52px; height: 52px; }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: none;
+      align-items: center; justify-content: center; z-index: 100; padding: 15px;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    .modal {
+      background: #182530; border: 1px solid var(--accent-gold); border-radius: 12px;
+      width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .modal-header { padding: 14px 18px; background: #121c24; display: flex; justify-content: space-between; align-items: center; }
+    .modal-filters { padding: 12px 18px; display: flex; gap: 10px; flex-wrap: wrap; background: #15202a; }
+    .modal-filters input, .modal-filters select {
+      background: #0c1218; border: 1px solid var(--border-color); color: var(--text-main);
+      padding: 7px 10px; border-radius: 6px; outline: none;
+    }
+    .modal-filters input { flex: 1; min-width: 160px; }
+
+    .items-list {
+      padding: 15px; overflow-y: auto; display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px;
+    }
+    .item-option {
+      background: #0e161d; border: 1px solid var(--border-color); border-radius: 8px;
+      padding: 6px; text-align: center; cursor: pointer;
+    }
+    .item-option:hover { border-color: var(--accent-gold); background: #1b2a36; }
+    .item-option img { width: 56px; height: 56px; object-fit: contain; }
+    .item-option span { display: block; font-size: 0.72rem; margin-top: 4px; color: var(--text-main); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>⚔️ Albion Party Builder</h1>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">
+        Нажмите на любой слот, чтобы выбрать экипировку. Названия ролей можно редактировать.
+      </p>
+    </div>
+    <div class="controls">
+      <button onclick="loadPreset()">Загрузить пример как на скрине</button>
+      <button onclick="clearBoard()">Очистить всё</button>
+      <button class="primary" onclick="saveBuilds()">💾 Сохранить</button>
+    </div>
+  </header>
+
+  <div class="board-wrapper">
+    <div class="board" id="board"></div>
+  </div>
+
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <div class="modal-header">
+        <strong id="modalTitle">Выбор предмета</strong>
+        <button onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-filters">
+        <input type="text" id="searchInput" placeholder="Поиск (Инкуб, Друид, Омлет)..." oninput="renderItemChoices()" />
+        <select id="tierSelect" onchange="renderItemChoices()">
+          <option value="T4">Tier 4</option>
+          <option value="T5">Tier 5</option>
+          <option value="T6">Tier 6</option>
+          <option value="T7">Tier 7</option>
+          <option value="T8" selected>Tier 8</option>
+        </select>
+        <select id="enchantSelect" onchange="renderItemChoices()">
+          <option value="">.0 (Обычный)</option>
+          <option value="@1">.1 (Необычный)</option>
+          <option value="@2">.2 (Редкий)</option>
+          <option value="@3">.3 (Выдающийся)</option>
+          <option value="@4">.4 (Шедевр)</option>
+        </select>
+        <button onclick="clearCurrentSlot()" style="background:#5c2323; border-color:#8a3434;">Убрать</button>
+      </div>
+      <div class="items-list" id="itemsList"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
