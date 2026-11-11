@@ -144,6 +144,31 @@
     .item-option:hover { border-color: var(--accent-gold); background: #1b2a36; }
     .item-option img { width: 56px; height: 56px; object-fit: contain; }
     .item-option span { display: block; font-size: 0.72rem; margin-top: 4px; color: var(--text-main); }
+        /* Оформление зоны для экспорта в картинку */
+    .export-container {
+      background: linear-gradient(145deg, #0f171e 0%, #15222d 100%);
+      padding: 20px;
+      border-radius: 14px;
+      display: inline-block;
+      min-width: 100%;
+    }
+    .export-header-banner {
+      display: none;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent-gold);
+      justify-content: space-between;
+      align-items: center;
+    }
+    .export-header-banner h3 { color: var(--accent-gold); font-size: 1.4rem; letter-spacing: 0.5px; }
+    .export-header-banner span { color: var(--text-muted); font-size: 0.85rem; }
+
+    /* Скрытие технических кнопок во время рендера картинки */
+    .is-exporting .export-header-banner { display: flex; }
+    .is-exporting .add-role-card,
+    .is-exporting .add-swap-btn,
+    .is-exporting .remove-role-btn { display: none !important; }
+    .is-exporting .slot.empty::after { content: ""; }
   </style>
 </head>
 <body>
@@ -174,8 +199,13 @@
         <button class="primary" onclick="exportToPng()">📸 Скачать PNG</button>
       </div>
     </header>
-
-    <div class="party-row" id="partyRow"></div>
+        <div id="captureArea" class="export-container">
+      <div class="export-header-banner">
+        <h3 id="bannerTitle">Albion Online — Билды группы</h3>
+        <span>Albion Party Builder</span>
+      </div>
+      <div class="party-row" id="partyRow"></div>
+    </div>
   </div>
 
   <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ПРЕДМЕТА -->
