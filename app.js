@@ -259,6 +259,11 @@ function resetParty() {
   }
 }
 async function exportToPng() {
+  if (typeof html2canvas === "undefined") {
+    alert("Библиотека html2canvas не подключена в index.html! Проверьте тег <script>.");
+    return;
+  }
+
   const captureArea = document.getElementById("captureArea");
   const titleInput = document.getElementById("partyTitleInput").value.trim();
   const bannerTitle = document.getElementById("bannerTitle");
@@ -266,11 +271,24 @@ async function exportToPng() {
   bannerTitle.textContent = titleInput || "Albion Online — Сборка группы";
   captureArea.classList.add("is-exporting");
 
+  // Временно заменяем поля ввода имен на обычный текст, чтобы html2canvas не выдавал ошибку
+  const inputs = captureArea.querySelectorAll(".role-header input");
+  const tempSpans = [];
+  inputs.forEach(inp => {
+    const span = document.createElement("span");
+    span.textContent = inp.value;
+    span.style.cssText = "font-weight:700; font-size:1rem; width:100%; text-align:center; display:block;";
+    inp.style.display = "none";
+    inp.parentNode.insertBefore(span, inp);
+    tempSpans.push({ inp, span });
+  });
+
   try {
     const canvas = await html2canvas(captureArea, {
       backgroundColor: "#0f171e",
       useCORS: true,
-      scale: 2 // Четкое качество (Retina)
+      allowTaint: false,
+      scale: 2
     });
 
     const link = document.createElement("a");
@@ -278,9 +296,13 @@ async function exportToPng() {
     link.href = canvas.toDataURL("image/png");
     link.click();
   } catch (err) {
-    alert("Не удалось создать картинку. Проверьте подключение к интернету.");
+    alert("Ошибка экспорта: " + err.message);
     console.error(err);
   } finally {
+    tempSpans.forEach(({ inp, span }) => {
+      span.remove();
+      inp.style.display = "";
+    });
     captureArea.classList.remove("is-exporting");
   }
 }
