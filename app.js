@@ -195,6 +195,14 @@ function openModal(memberIdx, type, key, label) {
   document.getElementById("modal").classList.add("active");
   renderItemChoices();
 }
+function closeModal() {
+  document.getElementById("modal").classList.remove("active");
+}
+
+// Закрытие при клике на темный фон вокруг окна
+document.getElementById("modal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
 
 function renderItemChoices() {
   const list = document.getElementById("itemsList");
@@ -220,7 +228,6 @@ function renderItemChoices() {
     list.appendChild(div);
   });
 }
-
 function selectItem(fullCode) {
   if (!activeTarget) return;
   const { memberIdx, type, key } = activeTarget;
