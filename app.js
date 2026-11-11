@@ -81,7 +81,8 @@ function showWelcome() {
 }
 
 function getRenderUrl(itemCode) {
-  return `https://albiononline.com{itemCode}.png?size=120`;
+  const originalUrl = `https://albiononline.com{itemCode}.png?size=120`;
+  return `https://wsrv.nl{encodeURIComponent(originalUrl)}`;
 }
 
 function renderParty() {
