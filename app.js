@@ -92,7 +92,6 @@ function renderParty() {
     const col = document.createElement("div");
     col.className = "role-column";
 
-    // Шапка с редактируемым именем и кнопкой удаления (если ролей > 1)
     const header = document.createElement("div");
     header.className = "role-header";
     header.innerHTML = `
@@ -101,7 +100,6 @@ function renderParty() {
     `;
     col.appendChild(header);
 
-    // Карточка билда
     const card = document.createElement("div");
     card.className = "build-card";
 
@@ -121,7 +119,6 @@ function renderParty() {
     });
     card.appendChild(grid);
 
-    // Блок настраиваемых свапов
     const swapsSec = document.createElement("div");
     swapsSec.className = "swaps-section";
     swapsSec.innerHTML = `<div class="swaps-title">Замены (Swaps)</div>`;
@@ -151,7 +148,6 @@ function renderParty() {
     row.appendChild(col);
   });
 
-  // Карточка "+" для добавления нового участника пати
   const addRoleCard = document.createElement("div");
   addRoleCard.className = "add-role-card";
   addRoleCard.onclick = addMember;
