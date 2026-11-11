@@ -177,27 +177,40 @@ function openModal(memberIdx, type, key, label) {
   activeTarget = { memberIdx, type, key };
   document.getElementById("modalTitle").textContent = `${party[memberIdx].name} — ${label}`;
   document.getElementById("searchInput").value = "";
+
+  const catSelect = document.getElementById("categorySelect");
+  if (type === "equip") {
+    catSelect.value = key;
+    catSelect.disabled = true; // Жесткая привязка к слоту
+  } else {
+    catSelect.value = "all";
+    catSelect.disabled = false; // Для свапов доступны все категории
+  }
+
   document.getElementById("modal").classList.add("active");
   renderItemChoices();
-}
-
-function closeModal() {
-  document.getElementById("modal").classList.remove("active");
 }
 
 function renderItemChoices() {
   const list = document.getElementById("itemsList");
   const query = document.getElementById("searchInput").value.toLowerCase();
+  const category = document.getElementById("categorySelect").value;
   const tier = document.getElementById("tierSelect").value;
   const enchant = document.getElementById("enchantSelect").value;
   list.innerHTML = "";
 
-  ITEMS_DB.filter(item => item.name.toLowerCase().includes(query)).forEach(item => {
+  const filtered = ITEMS_DB.filter(item => {
+    const matchesCat = category === "all" || item.cat === category;
+    const matchesQuery = item.name.toLowerCase().includes(query);
+    return matchesCat && matchesQuery;
+  });
+
+  filtered.forEach(item => {
     const effectiveTier = item.fixedTier || tier;
     const fullCode = `${effectiveTier}_${item.id}${enchant}`;
     const div = document.createElement("div");
     div.className = "item-option";
-    div.innerHTML = `<img src="${getRenderUrl(fullCode)}" loading="lazy" alt="${item.name}" /><span>${item.name}</span>`;
+    div.innerHTML = `<img src="${getRenderUrl(fullCode)}" loading="lazy" alt="" /><span>${item.name}</span>`;
     div.onclick = () => selectItem(fullCode);
     list.appendChild(div);
   });
