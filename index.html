@@ -184,7 +184,18 @@
         <button onclick="closeModal()">✕</button>
       </div>
       <div class="modal-filters">
-        <input type="text" id="searchInput" placeholder="Поиск (Инкуб, Друид, Омлет)..." oninput="renderItemChoices()" />
+        <input type="text" id="searchInput" placeholder="Поиск по названию..." oninput="renderItemChoices()" />
+        <select id="categorySelect" onchange="renderItemChoices()">
+          <option value="all">Все категории</option>
+          <option value="head">Голова</option>
+          <option value="armor">Броня</option>
+          <option value="shoes">Обувь</option>
+          <option value="weapon">Оружие</option>
+          <option value="offhand">Левая рука</option>
+          <option value="cape">Плащи</option>
+          <option value="potion">Зелья</option>
+          <option value="food">Еда</option>
+        </select>
         <select id="tierSelect" onchange="renderItemChoices()">
           <option value="T4">Tier 4</option>
           <option value="T5">Tier 5</option>
