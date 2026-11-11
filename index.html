@@ -168,8 +168,10 @@
         <h2>Сборка группы</h2>
       </div>
       <div class="controls">
+        <input type="text" id="partyTitleInput" placeholder="Название пати (напр. Авалон 8.3)" style="background:#0c1218; border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; outline:none;" />
         <button onclick="resetParty()">Сбросить до 1 игрока</button>
-        <button class="primary" onclick="saveBuilds()">💾 Сохранить</button>
+        <button onclick="saveBuilds()">💾 Сохранить</button>
+        <button class="primary" onclick="exportToPng()">📸 Скачать PNG</button>
       </div>
     </header>
 
@@ -215,7 +217,7 @@
       <div class="items-list" id="itemsList"></div>
     </div>
   </div>
-
+<script src="https://cloudflare.com"></script>
   <script src="app.js"></script>
 </body>
 </html>
