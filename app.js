@@ -21,17 +21,17 @@ const ITEMS_DB = [
   { id: "SHOES_CLOTH_ROYAL", name: "Королевские сандалии", cat: "shoes" },
   { id: "MAIN_MACE_HELL", name: "Булава инкуба", cat: "weapon" },
   { id: "2H_MACE", name: "Тяжелая булава", cat: "weapon" },
-  { id: "MAIN_HOLYSTAFF_AVALON", name: "Священный посох (Искупление)", cat: "weapon" },
+  { id: "MAIN_HOLYSTAFF_AVALON", name: "Священный посох", cat: "weapon" },
   { id: "2H_HOLYSTAFF_HELL", name: "Посох падших", cat: "weapon" },
   { id: "MAIN_CURSEDSTAFF_AVALON", name: "Призыватель теней", cat: "weapon" },
   { id: "2H_ARCANESTAFF_HELL", name: "Оккультный посох", cat: "weapon" },
   { id: "2H_FROSTSTAFF_CRYSTAL", name: "Ледяная призма", cat: "weapon" },
   { id: "2H_BOW_AVALON", name: "Туманный пронзатель", cat: "weapon" },
   { id: "2H_FIRESTAFF_HELL", name: "Пылающий посох", cat: "weapon" },
-  { id: "OFF_SHIELD_AVALON", name: "Эгида (Авалонский щит)", cat: "offhand" },
+  { id: "OFF_SHIELD_AVALON", name: "Эгида (Щит)", cat: "offhand" },
   { id: "OFF_HORN_KEEPER", name: "Туманный зов", cat: "offhand" },
   { id: "OFF_BOOK", name: "Книга заклинаний", cat: "offhand" },
-  { id: "OFF_ORB_MORGANA", name: "Корень природы / Сфера", cat: "offhand" },
+  { id: "OFF_ORB_MORGANA", name: "Корень природы", cat: "offhand" },
   { id: "CAPEITEM_FW_MARTLOCK", name: "Плащ Мартлока", cat: "cape" },
   { id: "CAPEITEM_FW_LYMHURST", name: "Плащ Лимхерста", cat: "cape" },
   { id: "CAPEITEM_HERETIC", name: "Плащ еретиков", cat: "cape" },
@@ -43,11 +43,9 @@ const ITEMS_DB = [
   { id: "POTION_RESIST", name: "Зелье защиты", cat: "potion", fixedTier: "T7" },
   { id: "POTION_HEAL", name: "Зелье здоровья", cat: "potion", fixedTier: "T6" },
   { id: "POTION_ENERGY", name: "Зелье энергии", cat: "potion", fixedTier: "T6" },
-  { id: "POTION_COOLDOWN", name: "Зелье яда / КД", cat: "potion", fixedTier: "T8" }
+  { id: "POTION_COOLDOWN", name: "Зелье яда", cat: "potion", fixedTier: "T8" }
 ];
 
-const DEFAULT_ROLES = ["Tank", "Heal", "Shadow Caller", "Prism", "Mistpiercer"];
-const ACTIVITIES = ["PVE", "PVP"];
 const MAIN_SLOTS = [
   { key: "bag", label: "Сумка", hidden: true },
   { key: "head", label: "Голова" },
@@ -60,91 +58,124 @@ const MAIN_SLOTS = [
   { key: "food", label: "Еда" }
 ];
 
-let state = JSON.parse(localStorage.getItem("albion_party_builds")) || {
-  roles: [...DEFAULT_ROLES],
-  builds: {}
-};
+let party = JSON.parse(localStorage.getItem("albion_custom_party")) || [
+  { name: "Человек 1", equip: {}, swaps: [] }
+];
+
 let activeTarget = null;
+
+function startBuilder() {
+  document.getElementById("welcomeScreen").style.display = "none";
+  document.getElementById("builderScreen").classList.add("active");
+  renderParty();
+}
+
+function showWelcome() {
+  document.getElementById("builderScreen").classList.remove("active");
+  document.getElementById("welcomeScreen").style.display = "block";
+}
 
 function getRenderUrl(itemCode) {
   return `https://albiononline.com{itemCode}.png?size=120`;
 }
 
-function renderBoard() {
-  const board = document.getElementById("board");
-  board.innerHTML = "";
+function renderParty() {
+  const row = document.getElementById("partyRow");
+  row.innerHTML = "";
 
-  state.roles.forEach((roleName, idx) => {
-    const div = document.createElement("div");
-    div.className = "role-header";
-    div.innerHTML = `<input type="text" value="${roleName}" onchange="updateRoleName(${idx}, this.value)" />`;
-    board.appendChild(div);
-  });
+  party.forEach((member, idx) => {
+    const col = document.createElement("div");
+    col.className = "role-column";
 
-  board.appendChild(document.createElement("div"));
+    // Шапка с редактируемым именем и кнопкой удаления (если ролей > 1)
+    const header = document.createElement("div");
+    header.className = "role-header";
+    header.innerHTML = `
+      <input type="text" value="${member.name}" onchange="renameMember(${idx}, this.value)" />
+      ${party.length > 1 ? `<button class="remove-role-btn" title="Удалить роль" onclick="removeMember(${idx})">✕</button>` : ""}
+    `;
+    col.appendChild(header);
 
-  ACTIVITIES.forEach(activity => {
-    state.roles.forEach((_, roleIdx) => {
-      const buildId = `${activity}_${roleIdx}`;
-      const buildData = state.builds[buildId] || {};
-      const card = document.createElement("div");
-      card.className = "build-card";
+    // Карточка билда
+    const card = document.createElement("div");
+    card.className = "build-card";
 
-      const grid = document.createElement("div");
-      grid.className = "equip-grid";
+    const grid = document.createElement("div");
+    grid.className = "equip-grid";
 
-      MAIN_SLOTS.forEach(s => {
-        const slotDiv = document.createElement("div");
-        slotDiv.className = "slot" + (s.hidden ? " invisible" : "") + (!buildData[s.key] ? " empty" : "");
-        slotDiv.setAttribute("data-label", s.label);
-        if (!s.hidden) {
-          slotDiv.onclick = () => openModal(activity, roleIdx, s.key, s.label);
-          if (buildData[s.key]) {
-            slotDiv.innerHTML = `<img src="${getRenderUrl(buildData[s.key])}" alt="" />`;
-          }
-        }
-        grid.appendChild(slotDiv);
-      });
+    MAIN_SLOTS.forEach(s => {
+      const slotDiv = document.createElement("div");
+      const itemCode = member.equip[s.key];
+      slotDiv.className = "slot" + (s.hidden ? " invisible" : "") + (!itemCode ? " empty" : "");
+      slotDiv.setAttribute("data-label", s.label);
+      if (!s.hidden) {
+        slotDiv.onclick = () => openModal(idx, "equip", s.key, s.label);
+        if (itemCode) slotDiv.innerHTML = `<img src="${getRenderUrl(itemCode)}" alt="" />`;
+      }
+      grid.appendChild(slotDiv);
+    });
+    card.appendChild(grid);
 
-      card.appendChild(grid);
+    // Блок настраиваемых свапов
+    const swapsSec = document.createElement("div");
+    swapsSec.className = "swaps-section";
+    swapsSec.innerHTML = `<div class="swaps-title">Замены (Swaps)</div>`;
 
-      const swapsWrap = document.createElement("div");
-      swapsWrap.className = "swaps-section";
-      swapsWrap.innerHTML = `<div class="swaps-title">Swaps / Замена</div>`;
-      const swapsRow = document.createElement("div");
-      swapsRow.className = "swaps-row";
+    const swapsRow = document.createElement("div");
+    swapsRow.className = "swaps-row";
 
-      ["swap1", "swap2", "swap3"].forEach((swapKey, i) => {
-        const sDiv = document.createElement("div");
-        sDiv.className = "slot" + (!buildData[swapKey] ? " empty" : "");
-        sDiv.setAttribute("data-label", `Swap ${i + 1}`);
-        sDiv.onclick = () => openModal(activity, roleIdx, swapKey, `Замена ${i + 1}`);
-        if (buildData[swapKey]) {
-          sDiv.innerHTML = `<img src="${getRenderUrl(buildData[swapKey])}" alt="" />`;
-        }
-        swapsRow.appendChild(sDiv);
-      });
-
-      swapsWrap.appendChild(swapsRow);
-      card.appendChild(swapsWrap);
-      board.appendChild(card);
+    member.swaps.forEach((swapCode, swapIdx) => {
+      const sDiv = document.createElement("div");
+      sDiv.className = "slot" + (!swapCode ? " empty" : "");
+      sDiv.setAttribute("data-label", `Свап ${swapIdx + 1}`);
+      sDiv.onclick = () => openModal(idx, "swap", swapIdx, `Замена ${swapIdx + 1}`);
+      if (swapCode) sDiv.innerHTML = `<img src="${getRenderUrl(swapCode)}" alt="" />`;
+      swapsRow.appendChild(sDiv);
     });
 
-    const label = document.createElement("div");
-    label.className = "row-label";
-    label.textContent = activity;
-    board.appendChild(label);
+    const addSwapBtn = document.createElement("div");
+    addSwapBtn.className = "add-swap-btn";
+    addSwapBtn.title = "Добавить слот замены";
+    addSwapBtn.textContent = "+";
+    addSwapBtn.onclick = () => addSwapSlot(idx);
+    swapsRow.appendChild(addSwapBtn);
+
+    swapsSec.appendChild(swapsRow);
+    card.appendChild(swapsSec);
+    col.appendChild(card);
+    row.appendChild(col);
   });
+
+  // Карточка "+" для добавления нового участника пати
+  const addRoleCard = document.createElement("div");
+  addRoleCard.className = "add-role-card";
+  addRoleCard.onclick = addMember;
+  addRoleCard.innerHTML = `<span>+</span><small>Добавить роль</small>`;
+  row.appendChild(addRoleCard);
 }
 
-function updateRoleName(idx, val) {
-  state.roles[idx] = val;
-  saveBuilds(true);
+function addMember() {
+  party.push({ name: `Человек ${party.length + 1}`, equip: {}, swaps: [] });
+  renderParty();
 }
 
-function openModal(activity, roleIdx, slotKey, label) {
-  activeTarget = { activity, roleIdx, slotKey };
-  document.getElementById("modalTitle").textContent = `${state.roles[roleIdx]} (${activity}) — ${label}`;
+function removeMember(idx) {
+  party.splice(idx, 1);
+  renderParty();
+}
+
+function renameMember(idx, val) {
+  party[idx].name = val;
+}
+
+function addSwapSlot(memberIdx) {
+  party[memberIdx].swaps.push(null);
+  renderParty();
+}
+
+function openModal(memberIdx, type, key, label) {
+  activeTarget = { memberIdx, type, key };
+  document.getElementById("modalTitle").textContent = `${party[memberIdx].name} — ${label}`;
   document.getElementById("searchInput").value = "";
   document.getElementById("modal").classList.add("active");
   renderItemChoices();
@@ -174,42 +205,30 @@ function renderItemChoices() {
 
 function selectItem(fullCode) {
   if (!activeTarget) return;
-  const buildId = `${activeTarget.activity}_${activeTarget.roleIdx}`;
-  if (!state.builds[buildId]) state.builds[buildId] = {};
-  state.builds[buildId][activeTarget.slotKey] = fullCode;
+  const { memberIdx, type, key } = activeTarget;
+  if (type === "equip") party[memberIdx].equip[key] = fullCode;
+  else party[memberIdx].swaps[key] = fullCode;
   closeModal();
-  renderBoard();
+  renderParty();
 }
 
 function clearCurrentSlot() {
   if (!activeTarget) return;
-  const buildId = `${activeTarget.activity}_${activeTarget.roleIdx}`;
-  if (state.builds[buildId]) delete state.builds[buildId][activeTarget.slotKey];
+  const { memberIdx, type, key } = activeTarget;
+  if (type === "equip") delete party[memberIdx].equip[key];
+  else party[memberIdx].swaps.splice(key, 1); // Удаляет сам слот замены
   closeModal();
-  renderBoard();
+  renderParty();
 }
 
-function saveBuilds(silent = false) {
-  localStorage.setItem("albion_party_builds", JSON.stringify(state));
-  if (!silent) alert("Билды сохранены в памяти браузера!");
+function saveBuilds() {
+  localStorage.setItem("albion_custom_party", JSON.stringify(party));
+  alert("Сборка сохранена!");
 }
 
-function clearBoard() {
-  if (confirm("Очистить все слоты?")) {
-    state.builds = {};
-    renderBoard();
+function resetParty() {
+  if (confirm("Сбросить всё и оставить 1 пустую карточку?")) {
+    party = [{ name: "Человек 1", equip: {}, swaps: [] }];
+    renderParty();
   }
 }
-
-function loadPreset() {
-  state.roles = [...DEFAULT_ROLES];
-  state.builds = {
-    "PVE_0": { head: "T8_HEAD_PLATE_SET2@1", cape: "T8_CAPEITEM_FW_MARTLOCK", weapon: "T8_MAIN_MACE_HELL@2", armor: "T8_ARMOR_PLATE_SET3@2", offhand: "T8_OFF_SHIELD_AVALON@2", potion: "T7_POTION_RESIST", shoes: "T8_SHOES_LEATHER_SET2@1", food: "T7_MEAL_OMELETTE@1", swap1: "T8_ARMOR_PLATE_HELL@1", swap2: "T8_HEAD_PLATE_SET3@1", swap3: "T8_SHOES_PLATE_SET1" },
-    "PVE_1": { head: "T8_HEAD_CLOTH_MORGANA@1", cape: "T8_CAPEITEM_FW_LYMHURST", weapon: "T8_MAIN_HOLYSTAFF_AVALON@2", armor: "T8_ARMOR_CLOTH_ROYAL@2", offhand: "T8_OFF_HORN_KEEPER@2", potion: "T6_POTION_ENERGY", shoes: "T8_SHOES_CLOTH_ROYAL@1", food: "T7_MEAL_OMELETTE@1", swap1: "T8_ARMOR_CLOTH_SET3@1" },
-    "PVE_2": { head: "T8_HEAD_LEATHER_MORGANA@1", cape: "T8_CAPEITEM_FW_LYMHURST", weapon: "T8_MAIN_CURSEDSTAFF_AVALON@2", armor: "T8_ARMOR_CLOTH_ROYAL@2", offhand: "T8_OFF_HORN_KEEPER@2", potion: "T6_POTION_ENERGY", shoes: "T8_SHOES_CLOTH_ROYAL@1", food: "T7_MEAL_OMELETTE@1", swap1: "T8_HEAD_CLOTH_SET2", swap2: "T8_2H_ARCANESTAFF_HELL@1" },
-    "PVE_3": { head: "T8_HEAD_LEATHER_MORGANA@1", cape: "T8_CAPEITEM_MORGANA", weapon: "T8_2H_FROSTSTAFF_CRYSTAL@2", armor: "T8_ARMOR_CLOTH_KEEPER@2", potion: "T6_POTION_ENERGY", shoes: "T8_SHOES_CLOTH_ROYAL@1", food: "T7_MEAL_OMELETTE@1", swap1: "T6_POTION_HEAL" },
-    "PVE_4": { head: "T8_HEAD_LEATHER_MORGANA@1", cape: "T8_CAPEITEM_FW_LYMHURST", weapon: "T8_2H_BOW_AVALON@2", armor: "T8_ARMOR_CLOTH_KEEPER@2", potion: "T6_POTION_ENERGY", shoes: "T8_SHOES_CLOTH_ROYAL@1", food: "T7_MEAL_OMELETTE@1", swap1: "T6_POTION_HEAL" }
-  };
-    renderBoard();
-  }
-  renderBoard();
