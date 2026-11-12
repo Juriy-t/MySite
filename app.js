@@ -200,12 +200,14 @@ document.getElementById("modal").addEventListener("click", function(e) {
   if (e.target === this) closeModal();
 });
 
+function getRenderUrl(itemCode) {
+  return `icons/${itemCode}.png`;
+}
+
 function renderItemChoices() {
   const list = document.getElementById("itemsList");
   const query = document.getElementById("searchInput").value.toLowerCase();
   const category = document.getElementById("categorySelect").value;
-  const tier = document.getElementById("tierSelect").value;
-  const enchant = document.getElementById("enchantSelect").value;
   list.innerHTML = "";
 
   const filtered = ITEMS_DB.filter(item => {
@@ -215,12 +217,10 @@ function renderItemChoices() {
   });
 
   filtered.forEach(item => {
-    const effectiveTier = item.fixedTier || tier;
-    const fullCode = `${effectiveTier}_${item.id}${enchant}`;
     const div = document.createElement("div");
     div.className = "item-option";
-    div.innerHTML = `<img src="${getRenderUrl(fullCode)}" loading="lazy" alt="" /><span>${item.name}</span>`;
-    div.onclick = () => selectItem(fullCode);
+    div.innerHTML = `<img src="${getRenderUrl(item.id)}" loading="lazy" alt="" /><span>${item.name}</span>`;
+    div.onclick = () => selectItem(item.id);
     list.appendChild(div);
   });
 }
