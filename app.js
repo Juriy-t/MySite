@@ -244,6 +244,20 @@ function openModal(memberIdx, type, key, label) {
   renderItemChoices();
 }
 
+function closeModal() {
+  const modal = document.getElementById("modal");
+  if (modal) modal.classList.remove("active");
+}
+
+window.addEventListener("click", function(e) {
+  const modal = document.getElementById("modal");
+  if (e.target === modal) closeModal();
+});
+
+window.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeModal();
+});
+
 function getRenderUrl(itemCode) {
   return `icons/${itemCode}.png`;
 }
