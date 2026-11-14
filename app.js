@@ -234,23 +234,15 @@ function openModal(memberIdx, type, key, label) {
   const catSelect = document.getElementById("categorySelect");
   if (type === "equip") {
     catSelect.value = key;
-    catSelect.disabled = true; // Жесткая привязка к слоту
+    catSelect.style.display = "none"; // Полностью скрываем лишний фильтр для основных слотов
   } else {
     catSelect.value = "all";
-    catSelect.disabled = false; // Для свапов доступны все категории
+    catSelect.style.display = "inline-block"; // Показываем выбор категорий только в свапах
   }
 
   document.getElementById("modal").classList.add("active");
   renderItemChoices();
 }
-function closeModal() {
-  document.getElementById("modal").classList.remove("active");
-}
-
-// Закрытие при клике на темный фон вокруг окна
-document.getElementById("modal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal();
-});
 
 function getRenderUrl(itemCode) {
   return `icons/${itemCode}.png`;
