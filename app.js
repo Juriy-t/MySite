@@ -70,6 +70,7 @@ let draggedItem = null; // Хранит информацию о перетаск
 function renderParty() {
   const row = document.getElementById("partyRow");
   row.innerHTML = "";
+  localStorage.setItem("albion_custom_party", JSON.stringify(party));
 
   party.forEach((member, idx) => {
     const col = document.createElement("div");
@@ -217,6 +218,7 @@ function removeMember(idx) {
 
 function renameMember(idx, val) {
   party[idx].name = val;
+  localStorage.setItem("albion_custom_party", JSON.stringify(party));
 }
 
 function addSwapSlot(memberIdx) {
@@ -302,10 +304,46 @@ function clearCurrentSlot() {
   renderParty();
 }
 
-function saveBuilds() {
-  localStorage.setItem("albion_custom_party", JSON.stringify(party));
-  alert("Сборка сохранена!");
+// Кодирование сборки в ссылку и копирование в буфер обмена
+function shareBuildLink() {
+  try {
+    const jsonStr = JSON.stringify(party);
+    // Безопасное кодирование кириллицы в Base64
+    const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+    const shareUrl = `${window.location.origin}${window.location.pathname}#build=${encoded}`;
+
+    window.history.replaceState(null, "", `#build=${encoded}`);
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      alert("Ссылка на вашу сборку скопирована в буфер обмена! Отправьте её друзьям.");
+    }).catch(() => {
+      prompt("Скопируйте ссылку вручную:", shareUrl);
+    });
+  } catch (e) {
+    alert("Не удалось создать ссылку.");
+    console.error(e);
+  }
 }
+
+// Проверка при открытии сайта: нет ли в ссылке чужой сборки
+function loadFromUrlHash() {
+  const hash = window.location.hash;
+  if (hash && hash.startsWith("#build=")) {
+    try {
+      const encoded = hash.replace("#build=", "");
+      const jsonStr = decodeURIComponent(escape(atob(encoded)));
+      const parsed = JSON.parse(jsonStr);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        party = parsed;
+        startBuilder(); // Сразу открываем конструктор с загруженной пати
+      }
+    } catch (e) {
+      console.error("Ошибка чтения сборки из ссылки:", e);
+    }
+  }
+}
+
+// Запускаем проверку ссылки при загрузке страницы
+loadFromUrlHash();
 
 function resetParty() {
   if (confirm("Сбросить всё и оставить 1 пустую карточку?")) {
