@@ -6,7 +6,7 @@ const CAPE_TYPES = [
   { code: "CAPEITEM_FW_BRIDGEWATCH", name: "Плащ Бриджуотча" },
   { code: "CAPEITEM_FW_CAERLEON", name: "Плащ Карлеона" },
   { code: "CAPEITEM_FW_FORTSTERLING", name: "Плащ Форт Стерлинга" },
-  { code: "CAPEITEM_FW_LYMHURST", name: "Плащ Лимхерста" },
+  { code: "CAPEITEM_FW_LYMHURST", name: "Плащ Люмхурста" },
   { code: "CAPEITEM_FW_MARTLOCK", name: "Плащ Мартлока" },
   { code: "CAPEITEM_FW_THETFORD", name: "Плащ Тетфорда" },
   { code: "CAPEITEM_HERETIC", name: "Плащ еретиков" },
