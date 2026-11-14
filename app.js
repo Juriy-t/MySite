@@ -65,6 +65,8 @@ function getRenderUrl(itemCode) {
   return `icons/${itemCode}.png`;
 }
 
+let draggedItem = null; // Хранит информацию о перетаскиваемом предмете
+
 function renderParty() {
   const row = document.getElementById("partyRow");
   row.innerHTML = "";
@@ -92,9 +94,16 @@ function renderParty() {
       const itemCode = member.equip[s.key];
       slotDiv.className = "slot" + (s.hidden ? " invisible" : "") + (!itemCode ? " empty" : "");
       slotDiv.setAttribute("data-label", s.label);
+
       if (!s.hidden) {
         slotDiv.onclick = () => openModal(idx, "equip", s.key, s.label);
-        if (itemCode) slotDiv.innerHTML = `<img src="${getRenderUrl(itemCode)}" alt="" />`;
+        if (itemCode) {
+          slotDiv.innerHTML = `<img src="${getRenderUrl(itemCode)}" alt="" />`;
+          slotDiv.draggable = true;
+          slotDiv.ondragstart = (e) => handleDragStart(e, idx, "equip", s.key, itemCode);
+        }
+        slotDiv.ondragover = (e) => e.preventDefault();
+        slotDiv.ondrop = (e) => handleDrop(e, idx, "equip", s.key);
       }
       grid.appendChild(slotDiv);
     });
@@ -112,7 +121,15 @@ function renderParty() {
       sDiv.className = "slot" + (!swapCode ? " empty" : "");
       sDiv.setAttribute("data-label", `Свап ${swapIdx + 1}`);
       sDiv.onclick = () => openModal(idx, "swap", swapIdx, `Замена ${swapIdx + 1}`);
-      if (swapCode) sDiv.innerHTML = `<img src="${getRenderUrl(swapCode)}" alt="" />`;
+
+      if (swapCode) {
+        sDiv.innerHTML = `<img src="${getRenderUrl(swapCode)}" alt="" />`;
+        sDiv.draggable = true;
+        sDiv.ondragstart = (e) => handleDragStart(e, idx, "swap", swapIdx, swapCode);
+      }
+      sDiv.ondragover = (e) => e.preventDefault();
+      sDiv.ondrop = (e) => handleDrop(e, idx, "swap", swapIdx);
+
       swapsRow.appendChild(sDiv);
     });
 
@@ -134,6 +151,58 @@ function renderParty() {
   addRoleCard.onclick = addMember;
   addRoleCard.innerHTML = `<span>+</span><small>Добавить роль</small>`;
   row.appendChild(addRoleCard);
+}
+
+function handleDragStart(e, memberIdx, type, key, code) {
+  draggedItem = { memberIdx, type, key, code };
+  e.dataTransfer.effectAllowed = "copyMove";
+}
+
+function handleDrop(e, targetMemberIdx, targetType, targetKey) {
+  e.preventDefault();
+  if (!draggedItem) return;
+
+  // Не делаем ничего, если бросили в тот же самый слот
+  if (
+    draggedItem.memberIdx === targetMemberIdx &&
+    draggedItem.type === targetType &&
+    draggedItem.key === targetKey
+  ) {
+    return;
+  }
+
+  // Проверка категории: в основной слот (голова, плащ и т.д.) можно класть только подходящий тип предмета
+  if (targetType === "equip") {
+    const itemObj = ITEMS_DB.find(i => i.id === draggedItem.code);
+    if (itemObj && itemObj.cat !== targetKey) {
+      return; // Игнорируем сброс, если категория не совпадает со слотом
+    }
+  }
+
+  const isCopy = e.ctrlKey || e.shiftKey; // Удерживание Ctrl или Shift копирует предмет
+  const targetExistingCode = targetType === "equip"
+    ? party[targetMemberIdx].equip[targetKey]
+    : party[targetMemberIdx].swaps[targetKey];
+
+  // Записываем перетащенный предмет в целевой слот
+  if (targetType === "equip") {
+    party[targetMemberIdx].equip[targetKey] = draggedItem.code;
+  } else {
+    party[targetMemberIdx].swaps[targetKey] = draggedItem.code;
+  }
+
+  // Если не зажато копирование — очищаем старый слот (или меняем предметы местами)
+  if (!isCopy) {
+    if (draggedItem.type === "equip") {
+      if (targetExistingCode) party[draggedItem.memberIdx].equip[draggedItem.key] = targetExistingCode;
+      else delete party[draggedItem.memberIdx].equip[draggedItem.key];
+    } else {
+      party[draggedItem.memberIdx].swaps[draggedItem.key] = targetExistingCode || null;
+    }
+  }
+
+  draggedItem = null;
+  renderParty();
 }
 
 function addMember() {
