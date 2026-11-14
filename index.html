@@ -4,202 +4,141 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Albion Online — Конструктор билдов пати</title>
-  <style>
+    <style>
+    @import url('https://googleapis.com');
+
     :root {
-      --bg-dark: #0f171e;
-      --bg-card: #16222c;
-      --bg-slot: #0c1218;
-      --accent-gold: #d4af37;
-      --header-mint: #cde7d8;
-      --header-text: #0f171e;
-      --text-main: #e6edf3;
-      --text-muted: #8b949e;
-      --border-color: #263847;
+      --wood-dark: #18100a;
+      --wood-medium: #26180f;
+      --parchment-bg: #2e2016;
+      --parchment-card: #362519;
+      --slot-leather: #140d08;
+      --gold-bright: #e0b354;
+      --gold-dim: #9c742c;
+      --bronze-border: #5c3d24;
+      --text-parchment: #f3e6d0;
+      --text-muted: #b89f82;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Lora', Georgia, serif; }
 
-    /* Экран приветствия */
+    body {
+      background-color: var(--wood-dark);
+      background-image:
+        radial-gradient(circle at 50% 20%, rgba(74, 48, 28, 0.35), rgba(14, 9, 5, 0.95)),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 2px, transparent 2px, transparent 12px);
+      color: var(--text-parchment);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, button.primary, .role-header input { font-family: 'Cinzel', Georgia, serif; letter-spacing: 0.6px; }
+
     .welcome-screen {
-      max-width: 720px; margin: 80px auto; padding: 40px;
-      background: var(--bg-card); border: 1px solid var(--border-color);
-      border-radius: 16px; text-align: center;
+      max-width: 720px; margin: 80px auto; padding: 45px 40px;
+      background: linear-gradient(160deg, #332216 0%, #21150d 100%);
+      border: 2px solid var(--gold-dim);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.75), inset 0 0 30px rgba(0, 0, 0, 0.5);
+      border-radius: 12px; text-align: center;
     }
-    .welcome-screen h1 { font-size: 2rem; color: var(--accent-gold); margin-bottom: 16px; }
-    .welcome-screen p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; }
+    .welcome-screen h1 { font-size: 2.1rem; color: var(--gold-bright); text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8); margin-bottom: 18px; }
+    .welcome-screen p { font-size: 1.05rem; color: var(--text-parchment); line-height: 1.7; margin-bottom: 30px; opacity: 0.9; }
 
     button {
-      background: #1f303e; color: var(--text-main); border: 1px solid var(--border-color);
-      padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s;
+      background: linear-gradient(180deg, #3b281a 0%, #24170e 100%);
+      color: var(--text-parchment); border: 1px solid var(--gold-dim);
+      padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5); transition: 0.2s;
     }
-    button:hover { border-color: var(--accent-gold); background: #273c4d; }
-    button.primary { background: var(--accent-gold); color: #0f171e; border-color: var(--accent-gold); font-size: 1rem; }
-    button.primary:hover { background: #e5c150; }
+    button:hover { border-color: var(--gold-bright); background: linear-gradient(180deg, #4a3322 0%, #2e1e13 100%); color: #fff; }
+    button.primary {
+      background: linear-gradient(180deg, #e5ba5c 0%, #a87925 100%);
+      color: #1a1008; border: 1px solid #ffdf8e; font-weight: 700; font-size: 1rem;
+    }
+    button.primary:hover { background: linear-gradient(180deg, #f2c96d 0%, #bd8a2e 100%); box-shadow: 0 0 14px rgba(224, 179, 84, 0.45); }
 
-    /* Рабочая зона конструктора */
-    .builder-screen { display: none; padding: 20px; }
+    .builder-screen { display: none; padding: 24px; }
     .builder-screen.active { display: block; }
 
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 15px; margin-bottom: 25px; padding-bottom: 15px;
-      border-bottom: 1px solid var(--border-color);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+      margin-bottom: 25px; padding: 14px 20px; background: rgba(24, 15, 9, 0.85);
+      border: 1px solid var(--bronze-border); border-radius: 10px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
     }
-    header h2 { color: var(--accent-gold); font-size: 1.4rem; }
+    header h2 { color: var(--gold-bright); font-size: 1.4rem; }
     .controls { display: flex; gap: 10px; flex-wrap: wrap; }
 
-    /* Горизонтальный ряд карточек пати */
-    .party-row {
-      display: flex; align-items: flex-start; gap: 16px;
-      overflow-x: auto; padding-bottom: 20px;
-    }
-
-    .role-column {
-      min-width: 230px; width: 230px; display: flex; flex-direction: column; gap: 10px;
-    }
-
+    .party-row { display: flex; align-items: flex-start; gap: 18px; overflow-x: auto; padding-bottom: 20px; }
+    .role-column { min-width: 235px; width: 235px; display: flex; flex-direction: column; gap: 10px; }
     .role-header {
-      background: var(--header-mint); color: var(--header-text);
-      padding: 8px 10px; border-radius: 8px; display: flex; align-items: center; gap: 6px;
+      background: linear-gradient(180deg, #d8b884 0%, #b5915b 100%);
+      color: #1f130a; padding: 8px 10px; border-radius: 6px; border: 1px solid #f5deb3;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 6px;
     }
-    .role-header input {
-      background: transparent; border: none; color: var(--header-text);
-      font-weight: 700; font-size: 1rem; text-align: center; width: 100%; outline: none;
-    }
-    .remove-role-btn {
-      background: transparent; border: none; color: #5c2323; font-weight: 900;
-      padding: 2px 6px; cursor: pointer; font-size: 0.9rem;
-    }
-    .remove-role-btn:hover { background: rgba(0,0,0,0.1); border-radius: 4px; }
+    .role-header input { background: transparent; border: none; color: #1f130a; font-weight: 800; font-size: 1rem; text-align: center; width: 100%; outline: none; }
+    .remove-role-btn { background: transparent; border: none; box-shadow: none; color: #6b1d1d; font-weight: 900; padding: 2px 6px; cursor: pointer; }
 
     .build-card {
-      background: var(--bg-card); border: 1px solid var(--border-color);
-      border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px;
+      background: linear-gradient(180deg, #332216 0%, #22160e 100%);
+      border: 2px solid var(--bronze-border); border-radius: 10px; padding: 14px;
+      display: flex; flex-direction: column; gap: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.4);
     }
 
-    .equip-grid {
-      display: grid; grid-template-columns: repeat(3, 60px);
-      grid-template-rows: repeat(3, 60px); gap: 6px; justify-content: center;
-    }
+    .equip-grid { display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 7px; justify-content: center; }
 
     .slot {
-      width: 60px; height: 60px; background: var(--bg-slot); border: 1px solid #304659;
-      border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: 0.15s; overflow: hidden;
+      width: 60px; height: 60px; background: var(--slot-leather); border: 1px solid #69472b;
+      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.85); border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: 0.15s; overflow: hidden;
     }
-    .slot:hover { border-color: var(--accent-gold); transform: scale(1.04); }
-    .slot.empty::after { content: attr(data-label); font-size: 9px; color: #4c667d; text-transform: uppercase; text-align: center; }
+    .slot:hover { border-color: var(--gold-bright); box-shadow: 0 0 10px rgba(224, 179, 84, 0.4); transform: scale(1.04); }
+    .slot.empty::after { content: attr(data-label); font-size: 9px; color: #7a5c43; text-transform: uppercase; text-align: center; font-weight: 600; }
     .slot.invisible { visibility: hidden; pointer-events: none; }
     .slot img { width: 100%; height: 100%; object-fit: contain; }
 
-    /* Настраиваемые свапы */
-    .swaps-section { border-top: 1px dashed var(--border-color); padding-top: 10px; }
+    .swaps-section { border-top: 1px dashed var(--bronze-border); padding-top: 10px; }
     .swaps-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; text-align: center; }
     .swaps-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
     .swaps-row .slot { width: 48px; height: 48px; }
 
     .add-swap-btn {
-      width: 48px; height: 48px; background: #121c24; border: 1px dashed #4c667d;
-      border-radius: 8px; color: var(--accent-gold); font-size: 1.3rem;
+      width: 48px; height: 48px; background: #1b110a; border: 1px dashed var(--gold-dim);
+      border-radius: 6px; color: var(--gold-bright); font-size: 1.3rem;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
     }
-    .add-swap-btn:hover { border-color: var(--accent-gold); background: #1a2834; }
+    .add-swap-btn:hover { border-color: var(--gold-bright); background: #2b1b10; }
 
-    /* Кнопка добавления новой роли (+) */
     .add-role-card {
-      min-width: 120px; height: 340px; background: rgba(22, 34, 44, 0.5);
-      border: 2px dashed var(--border-color); border-radius: 12px;
+      min-width: 120px; height: 345px; background: rgba(34, 22, 14, 0.45);
+      border: 2px dashed var(--bronze-border); border-radius: 10px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; color: var(--text-muted); transition: 0.2s; gap: 8px;
     }
-    .add-role-card:hover { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(22, 34, 44, 0.9); }
+    .add-role-card:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(46, 30, 19, 0.75); }
     .add-role-card span { font-size: 2.5rem; line-height: 1; }
 
-    /* Модальное окно */
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: none;
-      align-items: center; justify-content: center; z-index: 100; padding: 15px;
-    }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(10, 6, 3, 0.82); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; }
     .modal-backdrop.active { display: flex; }
-    .modal {
-      background: #182530; border: 1px solid var(--accent-gold); border-radius: 12px;
-      width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
-    }
-    .modal-header { padding: 14px 18px; background: #121c24; display: flex; justify-content: space-between; align-items: center; }
-    .modal-filters { padding: 12px 18px; display: flex; gap: 10px; flex-wrap: wrap; background: #15202a; }
-    .modal-filters input, .modal-filters select {
-      background: #0c1218; border: 1px solid var(--border-color); color: var(--text-main);
-      padding: 7px 10px; border-radius: 6px; outline: none;
-    }
+    .modal { background: #281b12; border: 2px solid var(--gold-dim); border-radius: 10px; width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
+    .modal-header { padding: 14px 18px; background: #1c120b; color: var(--gold-bright); border-bottom: 1px solid var(--bronze-border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-filters { padding: 12px 18px; display: flex; gap: 10px; flex-wrap: wrap; background: #22160e; border-bottom: 1px solid var(--bronze-border); }
+    .modal-filters input, .modal-filters select { background: var(--slot-leather); border: 1px solid var(--bronze-border); color: var(--text-parchment); padding: 7px 10px; border-radius: 6px; outline: none; }
     .modal-filters input { flex: 1; min-width: 160px; }
-    .items-list {
-      padding: 15px; overflow-y: auto; display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px;
-    }
-    .item-option {
-      background: #0e161d; border: 1px solid var(--border-color); border-radius: 8px;
-      padding: 6px; text-align: center; cursor: pointer;
-    }
-    .item-option:hover { border-color: var(--accent-gold); background: #1b2a36; }
+    .items-list { padding: 15px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 10px; }
+    .item-option { background: #1a110a; border: 1px solid var(--bronze-border); border-radius: 6px; padding: 6px; text-align: center; cursor: pointer; }
+    .item-option:hover { border-color: var(--gold-bright); background: #2e1e12; }
     .item-option img { width: 56px; height: 56px; object-fit: contain; }
-    .item-option span { display: block; font-size: 0.72rem; margin-top: 4px; color: var(--text-main); }
-        /* Оформление зоны для экспорта в картинку */
-    .export-container {
-      background: linear-gradient(145deg, #0f171e 0%, #15222d 100%);
-      padding: 20px;
-      border-radius: 14px;
-      display: inline-block;
-      min-width: 100%;
-    }
-    .export-header-banner {
-      display: none;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--accent-gold);
-      justify-content: space-between;
-      align-items: center;
-    }
-    .export-header-banner h3 { color: var(--accent-gold); font-size: 1.4rem; letter-spacing: 0.5px; }
+    .item-option span { display: block; font-size: 0.72rem; margin-top: 4px; color: var(--text-parchment); }
+
+    .export-container { background: linear-gradient(145deg, #21150d 0%, #140c07 100%); border: 2px solid var(--gold-dim); padding: 22px; border-radius: 12px; display: inline-block; min-width: 100%; }
+    .export-header-banner { display: none; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--gold-dim); justify-content: space-between; align-items: center; }
+    .export-header-banner h3 { color: var(--gold-bright); font-size: 1.4rem; }
     .export-header-banner span { color: var(--text-muted); font-size: 0.85rem; }
-
-    /* Скрытие технических кнопок во время рендера картинки */
     .is-exporting .export-header-banner { display: flex; }
-    .is-exporting .add-role-card,
-    .is-exporting .add-swap-btn,
-    .is-exporting .remove-role-btn { display: none !important; }
+    .is-exporting .add-role-card, .is-exporting .add-swap-btn, .is-exporting .remove-role-btn { display: none !important; }
     .is-exporting .slot.empty::after { content: ""; }
-        body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .main-content {
-      flex: 1;
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 20px;
-      border-top: 1px solid var(--border-color);
-      text-align: center;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      background: #0b1116;
-      line-height: 1.5;
-    }
-
-    footer a {
-      color: var(--accent-gold);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
   </style>
+
 </head>
 <body>
 
