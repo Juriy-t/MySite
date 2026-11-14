@@ -173,7 +173,7 @@
       Добро пожаловать, сайт разработан с целью облегчить создания картинок с билдами.
     </p>
 
-    <button class="primary" onclick="startBuilder()">Создать пати</button>
+    <button class="primary" onclick="startBuilder()">Открыть</button>
   </div>
 
   <!-- ЭКРАН 2: КОНСТРУКТОР -->
@@ -181,11 +181,11 @@
     <header>
       <div style="display: flex; align-items: center; gap: 12px;">
         <button onclick="showWelcome()">← На главную</button>
-        <h2>Сборка группы</h2>
+        <h2>Меню создания</h2>
       </div>
       <div class="controls">
         <input type="text" id="partyTitleInput" placeholder="Название пати (напр. Авалон 8.3)" style="background:#0c1218; border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; outline:none;" />
-        <button onclick="resetParty()">Сбросить до 1 игрока</button>
+        <button onclick="resetParty()">Сброс</button>
         <button onclick="shareBuildLink()">🔗 Поделиться ссылкой</button>
         <button class="primary" onclick="exportToPng()">📸 Скачать PNG</button>
       </div>
@@ -227,11 +227,11 @@
           <option value="food">Еда</option>
         </select>
         <select id="tierSelect" onchange="renderItemChoices()">
-          <option value="T4">Tier 4</option>
-          <option value="T5">Tier 5</option>
-          <option value="T6">Tier 6</option>
-          <option value="T7">Tier 7</option>
-          <option value="T8" selected>Tier 8</option>
+          <option value="T4">Тир 4</option>
+          <option value="T5">Тир 5</option>
+          <option value="T6">Тир 6</option>
+          <option value="T7">Тир 7</option>
+          <option value="T8" selected>Тир 8</option>
         </select>
         <select id="enchantSelect" onchange="renderItemChoices()">
           <option value="">Зачарование 0</option>
