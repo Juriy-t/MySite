@@ -1,23 +1,37 @@
-const ITEMS_DB = [
-  // Обычный плащ (T4)
-  { id: "T4_CAPE", name: "Обычный плащ (T4)", cat: "cape" },
-  { id: "T4_CAPE@1", name: "Обычный плащ (T4.1)", cat: "cape" },
-  { id: "T4_CAPE@2", name: "Обычный плащ (T4.2)", cat: "cape" },
-  { id: "T4_CAPE@3", name: "Обычный плащ (T4.3)", cat: "cape" },
-
-  // Авалонский плащ (T4)
-  { id: "T4_CAPEITEM_AVALON", name: "Авалонский плащ (T4)", cat: "cape" },
-  { id: "T4_CAPEITEM_AVALON@1", name: "Авалонский плащ (T4.1)", cat: "cape" },
-  { id: "T4_CAPEITEM_AVALON@2", name: "Авалонский плащ (T4.2)", cat: "cape" },
-  { id: "T4_CAPEITEM_AVALON@3", name: "Авалонский плащ (T4.3)", cat: "cape" },
-  { id: "T4_CAPEITEM_AVALON@4", name: "Авалонский плащ (T4.4)", cat: "cape" },
-
-  // Демонический плащ (T4)
-  { id: "T4_CAPEITEM_DEMON", name: "Демонический плащ (T4)", cat: "cape" },
-  { id: "T4_CAPEITEM_DEMON@1", name: "Демонический плащ (T4.1)", cat: "cape" },
-  { id: "T4_CAPEITEM_DEMON@2", name: "Демонический плащ (T4.2)", cat: "cape" },
-  { id: "T4_CAPEITEM_DEMON@3", name: "Демонический плащ (T4.3)", cat: "cape" }
+const CAPE_TYPES = [
+  { code: "CAPE", name: "Обычный плащ" },
+  { code: "CAPEITEM_AVALON", name: "Авалонский плащ" },
+  { code: "CAPEITEM_DEMON", name: "Демонический плащ" },
+  { code: "CAPEITEM_FW_BRECILIEN", name: "Плащ Бресилиона" },
+  { code: "CAPEITEM_FW_BRIDGEWATCH", name: "Плащ Бриджуотча" },
+  { code: "CAPEITEM_FW_CAERLEON", name: "Плащ Карлеона" },
+  { code: "CAPEITEM_FW_FORTSTERLING", name: "Плащ Форт Стерлинга" },
+  { code: "CAPEITEM_FW_LYMHURST", name: "Плащ Лимхерста" },
+  { code: "CAPEITEM_FW_MARTLOCK", name: "Плащ Мартлока" },
+  { code: "CAPEITEM_FW_THETFORD", name: "Плащ Тетфорда" },
+  { code: "CAPEITEM_HERETIC", name: "Плащ еретиков" },
+  { code: "CAPEITEM_KEEPER", name: "Плащ хранителей" },
+  { code: "CAPEITEM_MORGANA", name: "Плащ Морганы" },
+  { code: "CAPEITEM_SMUGGLER", name: "Плащ контрабандистов" },
+  { code: "CAPEITEM_UNDEAD", name: "Плащ нежити" }
 ];
+
+const ITEMS_DB = [];
+
+// Автоматически создаем все тиры (T4-T8) и зачарования (.0-.4) для каждого плаща
+CAPE_TYPES.forEach(cape => {
+  for (let tier = 4; tier <= 8; tier++) {
+    for (let ench = 0; ench <= 4; ench++) {
+      const enchSuffix = ench === 0 ? "" : `@${ench}`;
+      ITEMS_DB.push({
+        id: `T${tier}_${cape.code}${enchSuffix}`,
+        name: `${cape.name} (T${tier}.${ench})`,
+        cat: "cape"
+      });
+    }
+  }
+});
+
 const MAIN_SLOTS = [
   { key: "bag", label: "Сумка", hidden: true },
   { key: "head", label: "Голова" },
@@ -175,12 +189,22 @@ function renderItemChoices() {
   const list = document.getElementById("itemsList");
   const query = document.getElementById("searchInput").value.toLowerCase();
   const category = document.getElementById("categorySelect").value;
+  const tier = document.getElementById("tierSelect").value;       // "T4" .. "T8"
+  const enchant = document.getElementById("enchantSelect").value; // "", "@1" .. "@4"
+
   list.innerHTML = "";
 
   const filtered = ITEMS_DB.filter(item => {
     const matchesCat = category === "all" || item.cat === category;
     const matchesQuery = item.name.toLowerCase().includes(query);
-    return matchesCat && matchesQuery;
+
+    // Проверяем совпадение тира и зачарования по ID предмета
+    const matchesTier = item.id.startsWith(`${tier}_`);
+    const matchesEnch = enchant === ""
+      ? !item.id.includes("@")
+      : item.id.endsWith(enchant);
+
+    return matchesCat && matchesQuery && matchesTier && matchesEnch;
   });
 
   filtered.forEach(item => {
