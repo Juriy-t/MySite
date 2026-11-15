@@ -30,7 +30,6 @@ const CLOTH_ARMOR_TYPES = [
 
 const ITEMS_DB = [];
 
-// Функция-помощник для генерации всех тиров (T4-T8) и зачарований (.0-.4)
 function registerItemGroup(list, category) {
   list.forEach(item => {
     for (let tier = 4; tier <= 8; tier++) {
@@ -46,7 +45,6 @@ function registerItemGroup(list, category) {
   });
 }
 
-// Заполняем базу плащами и тканевыми мантиями
 registerItemGroup(CAPE_TYPES, "cape");
 registerItemGroup(CLOTH_ARMOR_TYPES, "armor");
 
@@ -67,6 +65,11 @@ let party = JSON.parse(localStorage.getItem("albion_custom_party")) || [
 ];
 
 let activeTarget = null;
+let draggedItem = null;
+
+function getRenderUrl(itemCode) {
+  return `https://jesucristo69.com{itemCode}.webp?size=128`;
+}
 
 function startBuilder() {
   document.getElementById("welcomeScreen").style.display = "none";
@@ -78,13 +81,6 @@ function showWelcome() {
   document.getElementById("builderScreen").classList.remove("active");
   document.getElementById("welcomeScreen").style.display = "block";
 }
-
-function getRenderUrl(itemCode) {
-  return `icons/${itemCode}.png`;
-}
-
-let draggedItem = null; // Хранит информацию о перетаскиваемом предмете
-
 function renderParty() {
   const row = document.getElementById("partyRow");
   row.innerHTML = "";
@@ -117,7 +113,7 @@ function renderParty() {
       if (!s.hidden) {
         slotDiv.onclick = () => openModal(idx, "equip", s.key, s.label);
         if (itemCode) {
-          slotDiv.innerHTML = `<img src="${getRenderUrl(itemCode)}" alt="" />`;
+          slotDiv.innerHTML = `<img src="${getRenderUrl(itemCode)}" crossorigin="anonymous" alt="" />`;
           slotDiv.draggable = true;
           slotDiv.ondragstart = (e) => handleDragStart(e, idx, "equip", s.key, itemCode);
         }
@@ -142,7 +138,7 @@ function renderParty() {
       sDiv.onclick = () => openModal(idx, "swap", swapIdx, `Замена ${swapIdx + 1}`);
 
       if (swapCode) {
-        sDiv.innerHTML = `<img src="${getRenderUrl(swapCode)}" alt="" />`;
+        sDiv.innerHTML = `<img src="${getRenderUrl(swapCode)}" crossorigin="anonymous" alt="" />`;
         sDiv.draggable = true;
         sDiv.ondragstart = (e) => handleDragStart(e, idx, "swap", swapIdx, swapCode);
       }
@@ -181,7 +177,6 @@ function handleDrop(e, targetMemberIdx, targetType, targetKey) {
   e.preventDefault();
   if (!draggedItem) return;
 
-  // Не делаем ничего, если бросили в тот же самый слот
   if (
     draggedItem.memberIdx === targetMemberIdx &&
     draggedItem.type === targetType &&
@@ -190,27 +185,24 @@ function handleDrop(e, targetMemberIdx, targetType, targetKey) {
     return;
   }
 
-  // Проверка категории: в основной слот (голова, плащ и т.д.) можно класть только подходящий тип предмета
   if (targetType === "equip") {
     const itemObj = ITEMS_DB.find(i => i.id === draggedItem.code);
     if (itemObj && itemObj.cat !== targetKey) {
-      return; // Игнорируем сброс, если категория не совпадает со слотом
+      return;
     }
   }
 
-  const isCopy = e.ctrlKey || e.shiftKey; // Удерживание Ctrl или Shift копирует предмет
+  const isCopy = e.ctrlKey || e.shiftKey;
   const targetExistingCode = targetType === "equip"
     ? party[targetMemberIdx].equip[targetKey]
     : party[targetMemberIdx].swaps[targetKey];
 
-  // Записываем перетащенный предмет в целевой слот
   if (targetType === "equip") {
     party[targetMemberIdx].equip[targetKey] = draggedItem.code;
   } else {
     party[targetMemberIdx].swaps[targetKey] = draggedItem.code;
   }
 
-  // Если не зажато копирование — очищаем старый слот (или меняем предметы местами)
   if (!isCopy) {
     if (draggedItem.type === "equip") {
       if (targetExistingCode) party[draggedItem.memberIdx].equip[draggedItem.key] = targetExistingCode;
@@ -223,7 +215,6 @@ function handleDrop(e, targetMemberIdx, targetType, targetKey) {
   draggedItem = null;
   renderParty();
 }
-
 function addMember() {
   party.push({ name: `Человек ${party.length + 1}`, equip: {}, swaps: [] });
   renderParty();
@@ -252,10 +243,10 @@ function openModal(memberIdx, type, key, label) {
   const catSelect = document.getElementById("categorySelect");
   if (type === "equip") {
     catSelect.value = key;
-    catSelect.style.display = "none"; // Полностью скрываем лишний фильтр для основных слотов
+    catSelect.style.display = "none";
   } else {
     catSelect.value = "all";
-    catSelect.style.display = "inline-block"; // Показываем выбор категорий только в свапах
+    catSelect.style.display = "inline-block";
   }
 
   document.getElementById("modal").classList.add("active");
@@ -276,24 +267,18 @@ window.addEventListener("keydown", function(e) {
   if (e.key === "Escape") closeModal();
 });
 
-function getRenderUrl(itemCode) {
-  return `icons/${itemCode}.png`;
-}
-
 function renderItemChoices() {
   const list = document.getElementById("itemsList");
   const query = document.getElementById("searchInput").value.toLowerCase();
   const category = document.getElementById("categorySelect").value;
-  const tier = document.getElementById("tierSelect").value;       // "T4" .. "T8"
-  const enchant = document.getElementById("enchantSelect").value; // "", "@1" .. "@4"
+  const tier = document.getElementById("tierSelect").value;
+  const enchant = document.getElementById("enchantSelect").value;
 
   list.innerHTML = "";
 
   const filtered = ITEMS_DB.filter(item => {
     const matchesCat = category === "all" || item.cat === category;
     const matchesQuery = item.name.toLowerCase().includes(query);
-
-    // Проверяем совпадение тира и зачарования по ID предмета
     const matchesTier = item.id.startsWith(`${tier}_`);
     const matchesEnch = enchant === ""
       ? !item.id.includes("@")
@@ -310,6 +295,7 @@ function renderItemChoices() {
     list.appendChild(div);
   });
 }
+
 function selectItem(fullCode) {
   if (!activeTarget) return;
   const { memberIdx, type, key } = activeTarget;
@@ -323,22 +309,20 @@ function clearCurrentSlot() {
   if (!activeTarget) return;
   const { memberIdx, type, key } = activeTarget;
   if (type === "equip") delete party[memberIdx].equip[key];
-  else party[memberIdx].swaps.splice(key, 1); // Удаляет сам слот замены
+  else party[memberIdx].swaps.splice(key, 1);
   closeModal();
   renderParty();
 }
 
-// Кодирование сборки в ссылку и копирование в буфер обмена
 function shareBuildLink() {
   try {
     const jsonStr = JSON.stringify(party);
-    // Безопасное кодирование кириллицы в Base64
     const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
     const shareUrl = `${window.location.origin}${window.location.pathname}#build=${encoded}`;
 
     window.history.replaceState(null, "", `#build=${encoded}`);
     navigator.clipboard.writeText(shareUrl).then(() => {
-      alert("Ссылка на вашу сборку скопирована в буфер обмена! Отправьте её друзьям.");
+      alert("Ссылка на вашу сборку скопирована в буфер обмена!");
     }).catch(() => {
       prompt("Скопируйте ссылку вручную:", shareUrl);
     });
@@ -348,7 +332,6 @@ function shareBuildLink() {
   }
 }
 
-// Проверка при открытии сайта: нет ли в ссылке чужой сборки
 function loadFromUrlHash() {
   const hash = window.location.hash;
   if (hash && hash.startsWith("#build=")) {
@@ -358,7 +341,7 @@ function loadFromUrlHash() {
       const parsed = JSON.parse(jsonStr);
       if (Array.isArray(parsed) && parsed.length > 0) {
         party = parsed;
-        startBuilder(); // Сразу открываем конструктор с загруженной пати
+        startBuilder();
       }
     } catch (e) {
       console.error("Ошибка чтения сборки из ссылки:", e);
@@ -366,15 +349,15 @@ function loadFromUrlHash() {
   }
 }
 
-// Запускаем проверку ссылки при загрузке страницы
 loadFromUrlHash();
 
 function resetParty() {
   if (confirm("Сбросить всё и оставить 1 пустую карточку?")) {
-    party = [{ name: "Человек 1", equip: {}, swaps: [] }];
+    party = [{ name: "Слот 1", equip: {}, swaps: [] }];
     renderParty();
   }
 }
+
 async function exportToPng() {
   if (typeof html2canvas === "undefined") {
     alert("Библиотека html2canvas не подключена в index.html! Проверьте тег <script>.");
@@ -388,7 +371,6 @@ async function exportToPng() {
   bannerTitle.textContent = titleInput || "Albion Online — Сборка группы";
   captureArea.classList.add("is-exporting");
 
-  // Временно заменяем поля ввода имен на обычный текст, чтобы html2canvas не выдавал ошибку
   const inputs = captureArea.querySelectorAll(".role-header input");
   const tempSpans = [];
   inputs.forEach(inp => {
@@ -402,7 +384,7 @@ async function exportToPng() {
 
   try {
     const canvas = await html2canvas(captureArea, {
-      backgroundColor: "#0f171e",
+      backgroundColor: "#06120e",
       useCORS: true,
       allowTaint: false,
       scale: 2
