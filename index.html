@@ -108,84 +108,101 @@
 
     header {
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-      margin-bottom: 25px; padding: 14px 20px; background: rgba(24, 15, 9, 0.85);
-      border: 1px solid var(--bronze-border); border-radius: 10px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      margin-bottom: 25px; padding: 14px 20px;
+      background: rgba(7, 20, 15, 0.88);
+      border: 1px solid #3b594d;
+      border-radius: 10px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7);
     }
-    header h2 { color: var(--gold-bright); font-size: 1.4rem; }
+    header h2 { color: #e2ece8; font-size: 1.4rem; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85); }
     .controls { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .party-row { display: flex; align-items: flex-start; gap: 18px; overflow-x: auto; padding-bottom: 20px; }
     .role-column { min-width: 235px; width: 235px; display: flex; flex-direction: column; gap: 10px; }
-    .role-header {
-      background: linear-gradient(180deg, #d8b884 0%, #b5915b 100%);
-      color: #1f130a; padding: 8px 10px; border-radius: 6px; border: 1px solid #f5deb3;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 6px;
-    }
-    .role-header input { background: transparent; border: none; color: #1f130a; font-weight: 800; font-size: 1rem; text-align: center; width: 100%; outline: none; }
-    .remove-role-btn { background: transparent; border: none; box-shadow: none; color: #6b1d1d; font-weight: 900; padding: 2px 6px; cursor: pointer; }
 
+    /* Серебряно-изумрудная плашка имени роли */
+    .role-header {
+      background: linear-gradient(180deg, #b8ccc3 0%, #86a195 100%);
+      color: #081711; padding: 8px 10px; border-radius: 6px; border: 1px solid #e2ece8;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65); display: flex; align-items: center; gap: 6px;
+    }
+    .role-header input { background: transparent; border: none; color: #081711; font-weight: 800; font-size: 1rem; text-align: center; width: 100%; outline: none; }
+    .remove-role-btn { background: transparent; border: none; box-shadow: none; color: #5c1919; font-weight: 900; padding: 2px 6px; cursor: pointer; }
+
+    /* Карточка персонажа в стиле темного изумрудного камня */
     .build-card {
-      background: linear-gradient(180deg, #332216 0%, #22160e 100%);
-      border: 2px solid var(--bronze-border); border-radius: 10px; padding: 14px;
+      background: linear-gradient(180deg, #0d241b 0%, #07140f 100%);
+      border: 1px solid #3b594d; border-radius: 10px; padding: 14px;
       display: flex; flex-direction: column; gap: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.75), inset 0 0 18px rgba(0, 0, 0, 0.6);
     }
 
     .equip-grid { display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 7px; justify-content: center; }
 
+    /* Утопленные слоты */
     .slot {
-      width: 60px; height: 60px; background: var(--slot-leather); border: 1px solid #69472b;
-      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.85); border-radius: 6px; cursor: pointer;
+      width: 60px; height: 60px; background: #040b08; border: 1px solid #2c473c;
+      box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9); border-radius: 6px; cursor: pointer;
       display: flex; align-items: center; justify-content: center; transition: 0.15s; overflow: hidden;
     }
-    .slot:hover { border-color: var(--gold-bright); box-shadow: 0 0 10px rgba(224, 179, 84, 0.4); transform: scale(1.04); }
-    .slot.empty::after { content: attr(data-label); font-size: 9px; color: #7a5c43; text-transform: uppercase; text-align: center; font-weight: 600; }
+    .slot:hover { border-color: #2ecc71; box-shadow: 0 0 12px rgba(46, 204, 113, 0.45); transform: scale(1.04); }
+    .slot.empty::after { content: attr(data-label); font-size: 9px; color: #5a7a6c; text-transform: uppercase; text-align: center; font-weight: 600; }
     .slot.invisible { visibility: hidden; pointer-events: none; }
     .slot img { width: 100%; height: 100%; object-fit: contain; }
 
-    .swaps-section { border-top: 1px dashed var(--bronze-border); padding-top: 10px; }
-    .swaps-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; text-align: center; }
+    .swaps-section { border-top: 1px dashed #2c473c; padding-top: 10px; }
+    .swaps-title { font-size: 0.72rem; color: #8ba399; margin-bottom: 6px; text-transform: uppercase; text-align: center; }
     .swaps-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
     .swaps-row .slot { width: 48px; height: 48px; }
 
     .add-swap-btn {
-      width: 48px; height: 48px; background: #1b110a; border: 1px dashed var(--gold-dim);
-      border-radius: 6px; color: var(--gold-bright); font-size: 1.3rem;
+      width: 48px; height: 48px; background: #06120d; border: 1px dashed #3b594d;
+      border-radius: 6px; color: #2ecc71; font-size: 1.3rem;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
     }
-    .add-swap-btn:hover { border-color: var(--gold-bright); background: #2b1b10; }
+    .add-swap-btn:hover { border-color: #2ecc71; background: #0e261d; }
 
     .add-role-card {
-      min-width: 120px; height: 345px; background: rgba(34, 22, 14, 0.45);
-      border: 2px dashed var(--bronze-border); border-radius: 10px;
+      min-width: 120px; height: 345px; background: rgba(7, 20, 15, 0.55);
+      border: 2px dashed #3b594d; border-radius: 10px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--text-muted); transition: 0.2s; gap: 8px;
+      cursor: pointer; color: #8ba399; transition: 0.2s; gap: 8px;
     }
-    .add-role-card:hover { border-color: var(--gold-bright); color: var(--gold-bright); background: rgba(46, 30, 19, 0.75); }
+    .add-role-card:hover { border-color: #2ecc71; color: #2ecc71; background: rgba(13, 36, 27, 0.8); }
     .add-role-card span { font-size: 2.5rem; line-height: 1; }
 
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(10, 6, 3, 0.82); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; }
+    /* Модальное окно выбора предметов */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(2, 8, 6, 0.85); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; }
     .modal-backdrop.active { display: flex; }
-    .modal { background: #281b12; border: 2px solid var(--gold-dim); border-radius: 10px; width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
-    .modal-header { padding: 14px 18px; background: #1c120b; color: var(--gold-bright); border-bottom: 1px solid var(--bronze-border); display: flex; justify-content: space-between; align-items: center; }
-    .modal-filters { padding: 12px 18px; display: flex; gap: 10px; flex-wrap: wrap; background: #22160e; border-bottom: 1px solid var(--bronze-border); }
-    .modal-filters input, .modal-filters select { background: var(--slot-leather); border: 1px solid var(--bronze-border); color: var(--text-parchment); padding: 7px 10px; border-radius: 6px; outline: none; }
+    .modal { background: #0b1c16; border: 2px solid #3b594d; border-radius: 10px; width: 100%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); }
+    .modal-header { padding: 14px 18px; background: #06120d; color: #e2ece8; border-bottom: 1px solid #2c473c; display: flex; justify-content: space-between; align-items: center; }
+    .modal-filters { padding: 12px 18px; display: flex; gap: 10px; flex-wrap: wrap; background: #081711; border-bottom: 1px solid #2c473c; }
+    .modal-filters input, .modal-filters select { background: #040b08; border: 1px solid #3b594d; color: #eef5f2; padding: 7px 10px; border-radius: 6px; outline: none; }
     .modal-filters input { flex: 1; min-width: 160px; }
     .items-list { padding: 15px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 10px; }
-    .item-option { background: #1a110a; border: 1px solid var(--bronze-border); border-radius: 6px; padding: 6px; text-align: center; cursor: pointer; }
-    .item-option:hover { border-color: var(--gold-bright); background: #2e1e12; }
+    .item-option { background: #06120d; border: 1px solid #2c473c; border-radius: 6px; padding: 6px; text-align: center; cursor: pointer; transition: 0.15s; }
+    .item-option:hover { border-color: #2ecc71; background: #102920; }
     .item-option img { width: 56px; height: 56px; object-fit: contain; }
-    .item-option span { display: block; font-size: 0.72rem; margin-top: 4px; color: var(--text-parchment); }
+    .item-option span { display: block; font-size: 0.72rem; margin-top: 4px; color: #eef5f2; }
 
-    .export-container { background: linear-gradient(145deg, #21150d 0%, #140c07 100%); border: 2px solid var(--gold-dim); padding: 22px; border-radius: 12px; display: inline-block; min-width: 100%; }
-    .export-header-banner { display: none; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--gold-dim); justify-content: space-between; align-items: center; }
-    .export-header-banner h3 { color: var(--gold-bright); font-size: 1.4rem; }
-    .export-header-banner span { color: var(--text-muted); font-size: 0.85rem; }
+    /* Зона конструктора и итогового PNG-экспорта */
+    .export-container {
+      background: rgba(6, 18, 14, 0.78);
+      border: 1px solid #3b594d;
+      padding: 22px;
+      border-radius: 12px;
+      display: inline-block;
+      min-width: 100%;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
+    }
+    .export-header-banner { display: none; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #3b594d; justify-content: space-between; align-items: center; }
+    .export-header-banner h3 { color: #e2ece8; font-size: 1.4rem; }
+    .export-header-banner span { color: #2ecc71; font-size: 0.85rem; }
     .is-exporting .export-header-banner { display: flex; }
     .is-exporting .add-role-card, .is-exporting .add-swap-btn, .is-exporting .remove-role-btn { display: none !important; }
     .is-exporting .slot.empty::after { content: ""; }
   </style>
-
+  
 </head>
 <body>
 
@@ -209,7 +226,7 @@
         <h2>Меню создания</h2>
       </div>
       <div class="controls">
-        <input type="text" id="partyTitleInput" placeholder="Название пати (напр. Авалон 8.3)" style="background:#0c1218; border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; outline:none;" />
+        <input type="text" id="partyTitleInput" placeholder="Название сборки" style="background:#040b08; border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:6px; outline:none;" />
         <button onclick="resetParty()">Сброс</button>
         <button onclick="shareBuildLink()">🔗 Поделиться ссылкой</button>
         <button class="primary" onclick="exportToPng()">📸 Скачать PNG</button>
