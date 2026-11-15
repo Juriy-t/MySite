@@ -21,9 +21,12 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      background-image: url('./dark-green.png');
-      background-size: 100% 100%;
+      background-color: #060f0c;
+      /* Мягко приглушаем фон, чтобы он создавал атмосферу и не спорил с плашкой */
+      background-image:
+        radial-gradient(circle at center, rgba(6, 15, 12, 0.35) 0%, rgba(3, 8, 6, 0.78) 100%),
+        url('./dark-green.png');
+      background-size: cover;
       background-position: center;
       background-attachment: fixed;
       background-repeat: no-repeat;
@@ -32,17 +35,20 @@
       display: flex;
       flex-direction: column;
     }
+
+    /* Аккуратная парящая плашка строго по центру экрана */
     .welcome-screen {
-      max-width: none;
-      width: 56%;
-      margin: 22vh auto auto 22%;
-      padding: 85px 60px;
+      max-width: 680px;
+      width: 90%;
+      margin: auto;
+      padding: 60px 70px;
       background-color: #0b1c16;
       background-image: url('./dark-greenp.png');
       background-size: 100% 100%;
       background-repeat: no-repeat;
-      border-radius: 12px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.95);
+      border-radius: 14px;
+      /* Глубокая объемная тень создает эффект парения над фоном */
+      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.95), 0 0 25px rgba(46, 204, 113, 0.15);
       text-align: center;
     }
       
@@ -219,9 +225,12 @@
   </div>
 
   <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ПРЕДМЕТА -->
-  <footer style="position: fixed; bottom: 13vh; left: 22%; width: 54%; text-align: center; font-size: 0.72rem; color: #9bb3a8; text-shadow: 0 2px 4px #000; line-height: 1.35; pointer-events: none;">
-    <p>© 2026 Albion Party Builder — фанатский конструктор сборок для групп. Авторские права на сайт принадлежат <strong style="color: #e2ece8;">TheHolyArgo</strong>.</p>
-    <p style="font-size: 0.65rem; opacity: 0.75;">
+  <footer style="margin-top: auto; padding: 14px 220px 14px 40px; background: linear-gradient(180deg, transparent 0%, rgba(3, 8, 6, 0.85) 100%); text-align: center; font-size: 0.76rem; color: #9bb3a8; text-shadow: 0 2px 4px #000; line-height: 1.4;">
+    <p>
+      © 2026 Albion Party Builder — фанатский конструктор сборок для групп. Авторские права на сайт принадлежат 
+      <a href="https://discord.com/534787735962124288" target="_blank" style="color: #2ecc71; font-weight: bold; text-decoration: underline;">TheHolyArgo</a>.
+    </p>
+    <p style="font-size: 0.68rem; opacity: 0.75;">
       Все иконки, названия предметов и торговые марки Albion Online являются собственностью Sandbox Interactive GmbH.
     </p>
   </footer>
