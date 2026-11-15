@@ -35,19 +35,20 @@
 
     /* Центрируем плашку строго посередине экрана внутри кованой рамки */
     .welcome-screen {
-      max-width: 660px;
-      width: 82%;
-      margin: 20vh auto auto auto; /* Опускаем плашку ровно в центр каменного окна */
-      padding: 40px 55px;
+      max-width: 680px;
+      width: 48%;
+      /* Точное попадание в пустой каменный прямоугольник на фоне */
+      margin: 23vh auto auto 25%;
+      padding: 44px 50px;
       background-color: #0b1c16;
       background-image: url('./dark-greenp.png');
       background-size: 100% 100%;
       background-repeat: no-repeat;
       border-radius: 10px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.95);
       text-align: center;
     }
-
+      
     .welcome-screen h1 {
       font-family: 'Philosopher', Georgia, serif;
       font-size: 2rem;
@@ -221,9 +222,9 @@
   </div>
 
   <!-- МОДАЛЬНОЕ ОКНО ВЫБОРА ПРЕДМЕТА -->
-  <footer style="margin-top: auto; margin-bottom: 12vh; padding: 0 260px 0 40px; background: transparent; text-align: center; font-size: 0.72rem; color: #9bb3a8; text-shadow: 0 1px 4px #000; line-height: 1.3;">
+  <footer style="position: fixed; bottom: 13vh; left: 22%; width: 54%; text-align: center; font-size: 0.72rem; color: #9bb3a8; text-shadow: 0 2px 4px #000; line-height: 1.35; pointer-events: none;">
     <p>© 2026 Albion Party Builder — фанатский конструктор сборок для групп. Авторские права на сайт принадлежат <strong style="color: #e2ece8;">TheHolyArgo</strong>.</p>
-    <p style="font-size: 0.66rem; opacity: 0.75;">
+    <p style="font-size: 0.65rem; opacity: 0.75;">
       Все иконки, названия предметов и торговые марки Albion Online являются собственностью Sandbox Interactive GmbH.
     </p>
   </footer>
