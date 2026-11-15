@@ -195,11 +195,50 @@
       min-width: 100%;
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
     }
-    .export-header-banner { display: none; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #3b594d; justify-content: space-between; align-items: center; }
-    .export-header-banner h3 { color: #e2ece8; font-size: 1.4rem; }
-    .export-header-banner span { color: #2ecc71; font-size: 0.85rem; }
+
+    .export-header-banner {
+      display: none;
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #527a6a;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .export-header-banner h3 {
+      color: #e2ece8;
+      font-size: 1.65rem;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+      letter-spacing: 1px;
+    }
+
+    .export-header-banner span {
+      color: #2ecc71;
+      font-family: 'Philosopher', Georgia, serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    /* Превращение в красивый изумрудно-серебряный свиток при скачивании PNG */
+    .is-exporting {
+      background-color: #091a14 !important;
+      background-image:
+        radial-gradient(circle at center, rgba(13, 38, 29, 0.35) 0%, rgba(4, 12, 9, 0.88) 100%),
+        url('./dark-greenp.png') !important;
+      background-size: 100% 100% !important;
+      padding: 48px 54px !important;
+      border-top: 10px solid #8ba399 !important;
+      border-bottom: 10px solid #8ba399 !important;
+      border-left: 2px solid #4c6e60 !important;
+      border-right: 2px solid #4c6e60 !important;
+      border-radius: 18px !important;
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85) !important;
+    }
+
     .is-exporting .export-header-banner { display: flex; }
-    .is-exporting .add-role-card, .is-exporting .add-swap-btn, .is-exporting .remove-role-btn { display: none !important; }
+    .is-exporting .add-role-card,
+    .is-exporting .add-swap-btn,
+    .is-exporting .remove-role-btn { display: none !important; }
     .is-exporting .slot.empty::after { content: ""; }
   </style>
   
@@ -233,10 +272,10 @@
       </div>
     </header>
         <div id="captureArea" class="export-container">
-      <div class="export-header-banner">
-        <h3 id="bannerTitle">Albion Online — Билды группы</h3>
-        <span>Albion Party Builder</span>
-      </div>
+    <div class="export-header-banner">
+      <h3 id="bannerTitle">Сборка группы</h3>
+      <span>Slizerin • Albion Party Builder</span>
+    </div>
       <div class="party-row" id="partyRow"></div>
     </div>
   </div>
