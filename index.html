@@ -285,6 +285,13 @@
           <option value="@3">Зачарование 3</option>
           <option value="@4">Зачарование 4</option>
         </select>
+          <select id="qualitySelect" onchange="renderItemChoices()">
+          <option value="1">Качество: Обычное</option>
+          <option value="2">Качество: Хорошее</option>
+          <option value="3">Качество: Выдающееся</option>
+          <option value="4">Качество: Отличное</option>
+          <option value="5">Качество: Шедевр</option>
+        </select>
         <button onclick="clearCurrentSlot()" style="background:#5c2323; border-color:#8a3434;">Убрать</button>
       </div>
       <div class="items-list" id="itemsList"></div>
