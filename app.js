@@ -3,12 +3,12 @@ const CAPE_TYPES = [
   { code: "CAPEITEM_AVALON", name: "Авалонский плащ" },
   { code: "CAPEITEM_DEMON", name: "Демонический плащ" },
   { code: "CAPEITEM_FW_BRECILIEN", name: "Плащ Бресилиона" },
-  { code: "CAPEITEM_FW_BRIDGEWATCH", name: "Плащ Бриджуотча" },
+  { code: "CAPEITEM_FW_BRIDGEWATCH", name: "Накидка Бриджуотча" },
   { code: "CAPEITEM_FW_CAERLEON", name: "Плащ Карлеона" },
-  { code: "CAPEITEM_FW_FORTSTERLING", name: "Плащ Форт Стерлинга" },
-  { code: "CAPEITEM_FW_LYMHURST", name: "Плащ Лимхерста" },
-  { code: "CAPEITEM_FW_MARTLOCK", name: "Плащ Мартлока" },
-  { code: "CAPEITEM_FW_THETFORD", name: "Плащ Тетфорда" },
+  { code: "CAPEITEM_FW_FORTSTERLING", name: "Накидка Форт Стерлинга" },
+  { code: "CAPEITEM_FW_LYMHURST", name: "Накидка Люмхурста" },
+  { code: "CAPEITEM_FW_MARTLOCK", name: "Накидка Мартлока" },
+  { code: "CAPEITEM_FW_THETFORD", name: "Накидка Тетфорда" },
   { code: "CAPEITEM_HERETIC", name: "Плащ еретиков" },
   { code: "CAPEITEM_KEEPER", name: "Плащ хранителей" },
   { code: "CAPEITEM_MORGANA", name: "Плащ Морганы" },
@@ -16,7 +16,8 @@ const CAPE_TYPES = [
   { code: "CAPEITEM_UNDEAD", name: "Плащ нежити" }
 ];
 
-const CLOTH_ARMOR_TYPES = [
+const ARMOR_TYPES = [
+  // Ткань
   { code: "ARMOR_CLOTH_SET1", name: "Мантия ученого" },
   { code: "ARMOR_CLOTH_SET2", name: "Мантия клирика" },
   { code: "ARMOR_CLOTH_SET3", name: "Мантия чародея" },
@@ -25,28 +26,346 @@ const CLOTH_ARMOR_TYPES = [
   { code: "ARMOR_CLOTH_HELL", name: "Дьявольская мантия" },
   { code: "ARMOR_CLOTH_MORGANA", name: "Мантия культиста" },
   { code: "ARMOR_CLOTH_AVALON", name: "Мантия чистоты" },
-  { code: "ARMOR_CLOTH_FEY", name: "Мантия из чешуи фей" }
+  { code: "ARMOR_CLOTH_FEY", name: "Мантия из сказочной чешуи" },
+  // Кожа
+  { code: "ARMOR_LEATHER_SET1", name: "Куртка наемника" },
+  { code: "ARMOR_LEATHER_SET2", name: "Куртка охотника" },
+  { code: "ARMOR_LEATHER_SET3", name: "Куртка убийцы" },
+  { code: "ARMOR_LEATHER_ROYAL", name: "Королевская куртка" },
+  { code: "ARMOR_LEATHER_MORGANA", name: "Куртка лазутчика" },
+  { code: "ARMOR_LEATHER_HELL", name: "Адская куртка" },
+  { code: "ARMOR_LEATHER_UNDEAD", name: "Куртка призрака" },
+  { code: "ARMOR_LEATHER_AVALON", name: "Куртка упорства" },
+  { code: "ARMOR_LEATHER_FEY", name: "Куртка туманного охотника" },
+  { code: "ARMOR_LEATHER_DRAGON", name: "Куртка драконоборца" },
+  // Латы
+  { code: "ARMOR_PLATE_SET1", name: "Броня солдата" },
+  { code: "ARMOR_PLATE_SET2", name: "Броня рыцаря" },
+  { code: "ARMOR_PLATE_SET3", name: "Броня хранителя" },
+  { code: "ARMOR_PLATE_ROYAL", name: "Королевская броня" },
+  { code: "ARMOR_PLATE_KEEPER", name: "Броня вершителя" },
+  { code: "ARMOR_PLATE_HELL", name: "Демоническая броня" },
+  { code: "ARMOR_PLATE_UNDEAD", name: "Могильная броня" },
+  { code: "ARMOR_PLATE_AVALON", name: "Броня доблести" },
+  { code: "ARMOR_PLATE_FEY", name: "Броня сумеречного ткача" }
 ];
 
-const ITEMS_DB = [];
+const HEAD_TYPES = [
+  // Ткань
+  { code: "HEAD_CLOTH_SET1", name: "Колпак ученого" },
+  { code: "HEAD_CLOTH_SET2", name: "Колпак клирика" },
+  { code: "HEAD_CLOTH_SET3", name: "Колпак чародея" },
+  { code: "HEAD_CLOTH_ROYAL", name: "Королевский колпак" },
+  { code: "HEAD_CLOTH_KEEPER", name: "Колпак друида" },
+  { code: "HEAD_CLOTH_HELL", name: "Дьявольский колпак" },
+  { code: "HEAD_CLOTH_MORGANA", name: "Колпак культиста" },
+  { code: "HEAD_CLOTH_AVALON", name: "Колпак чистоты" },
+  { code: "HEAD_CLOTH_FEY", name: "Шляпа из сказочной чешуи" },
+  // Кожа
+  { code: "HEAD_LEATHER_SET1", name: "Капюшон наемника" },
+  { code: "HEAD_LEATHER_SET2", name: "Капюшон охотника" },
+  { code: "HEAD_LEATHER_SET3", name: "Капюшон убийцы" },
+  { code: "HEAD_LEATHER_ROYAL", name: "Королевский капюшон" },
+  { code: "HEAD_LEATHER_MORGANA", name: "Капюшон лазутчика" },
+  { code: "HEAD_LEATHER_HELL", name: "Адский капюшон" },
+  { code: "HEAD_LEATHER_UNDEAD", name: "Капюшон призрака" },
+  { code: "HEAD_LEATHER_AVALON", name: "Капюшон упорства" },
+  { code: "HEAD_LEATHER_FEY", name: "Капюшон туманного охотника" },
+  { code: "HEAD_LEATHER_DRAGON", name: "Капюшон драконоборца" },
+  // Латы
+  { code: "HEAD_PLATE_SET1", name: "Шлем солдата" },
+  { code: "HEAD_PLATE_SET2", name: "Шлем рыцаря" },
+  { code: "HEAD_PLATE_SET3", name: "Шлем хранителя" },
+  { code: "HEAD_PLATE_ROYAL", name: "Королевский шлем" },
+  { code: "HEAD_PLATE_KEEPER", name: "Шлем вершителя" },
+  { code: "HEAD_PLATE_HELL", name: "Демонический шлем" },
+  { code: "HEAD_PLATE_UNDEAD", name: "Могильный шлем" },
+  { code: "HEAD_PLATE_AVALON", name: "Шлем доблести" },
+  { code: "HEAD_PLATE_FEY", name: "Шлем сумеречного ткача" }
+];
 
-function registerItemGroup(list, category) {
-  list.forEach(item => {
-    for (let tier = 4; tier <= 8; tier++) {
-      for (let ench = 0; ench <= 4; ench++) {
-        const enchSuffix = ench === 0 ? "" : `@${ench}`;
-        ITEMS_DB.push({
-          id: `T${tier}_${item.code}${enchSuffix}`,
-          name: `${item.name} (T${tier}.${ench})`,
-          cat: category
-        });
-      }
+const SHOES_TYPES = [
+  // Ткань
+  { code: "SHOES_CLOTH_SET1", name: "Сандалии ученого" },
+  { code: "SHOES_CLOTH_SET2", name: "Сандалии клирика" },
+  { code: "SHOES_CLOTH_SET3", name: "Сандалии чародея" },
+  { code: "SHOES_CLOTH_ROYAL", name: "Королевские сандалии" },
+  { code: "SHOES_CLOTH_KEEPER", name: "Сандалии друида" },
+  { code: "SHOES_CLOTH_HELL", name: "Дьявольские сандалии" },
+  { code: "SHOES_CLOTH_MORGANA", name: "Сандалии культиста" },
+  { code: "SHOES_CLOTH_AVALON", name: "Сандалии чистоты" },
+  { code: "SHOES_CLOTH_FEY", name: "Сандалии из сказочной чешуи" },
+  // Кожа
+  { code: "SHOES_LEATHER_SET1", name: "Ботинки наемника" },
+  { code: "SHOES_LEATHER_SET2", name: "Ботинки охотника" },
+  { code: "SHOES_LEATHER_SET3", name: "Ботинки убийцы" },
+  { code: "SHOES_LEATHER_ROYAL", name: "Королевские ботинки" },
+  { code: "SHOES_LEATHER_MORGANA", name: "Ботинки лазутчика" },
+  { code: "SHOES_LEATHER_HELL", name: "Адские ботинки" },
+  { code: "SHOES_LEATHER_UNDEAD", name: "Ботинки призрака" },
+  { code: "SHOES_LEATHER_AVALON", name: "Ботинки упорства" },
+  { code: "SHOES_LEATHER_FEY", name: "Ботинки туманного охотника" },
+  { code: "SHOES_LEATHER_DRAGON", name: "Сапоги драконоборца" },
+  // Латы
+  { code: "SHOES_PLATE_SET1", name: "Сапоги солдата" },
+  { code: "SHOES_PLATE_SET2", name: "Сапоги рыцаря" },
+  { code: "SHOES_PLATE_SET3", name: "Сапоги хранителя" },
+  { code: "SHOES_PLATE_ROYAL", name: "Королевские сапоги" },
+  { code: "SHOES_PLATE_KEEPER", name: "Сапоги вершителя" },
+  { code: "SHOES_PLATE_HELL", name: "Демонические сапоги" },
+  { code: "SHOES_PLATE_UNDEAD", name: "Могильные сапоги" },
+  { code: "SHOES_PLATE_AVALON", name: "Сапоги доблести" },
+  { code: "SHOES_PLATE_FEY", name: "Сапоги сумеречного ткача" }
+];
+
+const OFFHAND_TYPES = [
+  { code: "OFF_SHIELD", name: "Щит" },
+  { code: "OFF_TOWERSHIELD_UNDEAD", name: "Саркофаг" },
+  { code: "OFF_SHIELD_HELL", name: "Щит негодяя" },
+  { code: "OFF_SPIKEDSHIELD_MORGANA", name: "Лицелом" },
+  { code: "OFF_SHIELD_AVALON", name: "Эгида звёзд" },
+  { code: "OFF_TORCH", name: "Факел" },
+  { code: "OFF_HORN_KEEPER", name: "Зов тумана" },
+  { code: "OFF_TALISMAN_AVALON", name: "Священный скипетр" },
+  { code: "OFF_LAMP_UNDEAD", name: "Могильная свеча" },
+  { code: "OFF_CENSER_AVALON", name: "Небесное кадило" },
+  { code: "OFF_BOOK", name: "Книга заклинаний" },
+  { code: "OFF_ORB_MORGANA", name: "Око тайн" },
+  { code: "OFF_DEMONSKULL_HELL", name: "Череп-трофей" },
+  { code: "OFF_TOTEM_KEEPER", name: "Корень природы" },
+  { code: "OFF_TOME_CRYSTAL", name: "Гримуар сокрытого времени" },
+  { code: "OFF_TORCH_CRYSTAL", name: "Факел синего пламени" },
+  { code: "OFF_JESTERCANE_HELL", name: "Зловещая трость" },
+  { code: "OFF_SHIELD_CRYSTAL", name: "Несокрушимый бастион" },
+];
+const WEAPON_TYPES = [
+  // Мечи
+  { code: "MAIN_SWORD", name: "Палаш" },
+  { code: "2H_CLAYMORE", name: "Клеймор" },
+  { code: "2H_DUALSWORD", name: "Парные мечи" },
+  { code: "MAIN_SCIMITAR_MORGANA", name: "Королевский меч" },
+  { code: "2H_CLEAVER_HELL", name: "Меч резни" },
+  { code: "2H_DUALSCIMITAR_UNDEAD", name: "Галатины" },
+  { code: "2H_CLAYMORE_AVALON", name: "Царедворец" },
+  { code: "MAIN_SWORD_CRYSTAL", name: "Клинок бесконечности" },
+  // Топоры
+  { code: "MAIN_AXE", name: "Боевой топор" },
+  { code: "2H_AXE", name: "Большой топор" },
+  { code: "2H_HALBERD", name: "Алебарда" },
+  { code: "2H_HALBERD_MORGANA", name: "Падальщик" },
+  { code: "2H_SCYTHE_HELL", name: "Адская коса" },
+  { code: "2H_DUALAXE_KEEPER", name: "Медвежьи лапы" },
+  { code: "2H_AXE_AVALON", name: "Разрушитель миров" },
+  { code: "2H_SCYTHE_CRYSTAL", name: "Хрустальный жнец" },
+  // Булавы
+  { code: "MAIN_MACE", name: "Булава" },
+  { code: "2H_MACE", name: "Тяжелая булава" },
+  { code: "2H_FLAIL", name: "Моргенштерн" },
+  { code: "MAIN_ROCKMACE_KEEPER", name: "Каменная булава" },
+  { code: "MAIN_MACE_HELL", name: "Булава инкуба" },
+  { code: "2H_MACE_MORGANA", name: "Булава Камланна" },
+  { code: "2H_DUALMACE_AVALON", name: "Хранители клятвы" },
+  { code: "MAIN_MACE_CRYSTAL", name: "Грозовой монарх" },
+  // Молоты
+  { code: "MAIN_HAMMER", name: "Молот" },
+  { code: "2H_POLEHAMMER", name: "Чекан" },
+  { code: "2H_HAMMER", name: "Большой молот" },
+  { code: "2H_HAMMER_UNDEAD", name: "Могильный молот" },
+  { code: "2H_DUALHAMMER_HELL", name: "Молоты кузни" },
+  { code: "2H_RAM_KEEPER", name: "Хранитель рощи" },
+  { code: "2H_HAMMER_AVALON", name: "Длань правосудия" },
+  { code: "2H_HAMMER_CRYSTAL", name: "Молот истенных снарядов" },
+  
+  // Боевые перчатки
+  { code: "2H_KNUCKLES_SET1", name: "Перчатки крушителя" },
+  { code: "2H_KNUCKLES_SET2", name: "Боевые наручи" },
+  { code: "2H_KNUCKLES_SET3", name: "Шипастые рукавицы" },
+  { code: "2H_KNUCKLES_KEEPER", name: "Медвежьи перчатки" },
+  { code: "2H_KNUCKLES_HELL", name: "Адские длани" },
+  { code: "2H_KNUCKLES_MORGANA", name: "Вороний цестус" },
+  { code: "2H_KNUCKLES_AVALON", name: "Кулаки Авалона" },
+  { code: "2H_KNUCKLES_CRYSTAL", name: "Силовые наручи" },
+  // Копья
+  { code: "MAIN_SPEAR", name: "Копье" },
+  { code: "2H_SPEAR", name: "Пика" },
+  { code: "2H_GLAIVE", name: "Глефа" },
+  { code: "MAIN_SPEAR_KEEPER", name: "Копье цапли" },
+  { code: "2H_HARPOON_HELL", name: "Охотник за душами" },
+  { code: "2H_TRIDENT_UNDEAD", name: "Трезубец" },
+  { code: "MAIN_SPEAR_LANCE_AVALON", name: "Копье Рассвета" },
+  { code: "2H_GLAIVE_CRYSTAL", name: "Глефа разлома" },
+  // Кинжалы
+  { code: "MAIN_DAGGER", name: "Кинжал" },
+  { code: "2H_DAGGERPAIR", name: "Парные кинжалы" },
+  { code: "2H_CLAWPAIR", name: "Когти" },
+  { code: "MAIN_RAPIER_MORGANA", name: "Кровопускатель" },
+  { code: "MAIN_DAGGER_HELL", name: "Клык демона" },
+  { code: "2H_DUALSICKLE_UNDEAD", name: "Вестники смерти" },
+  { code: "2H_DAGGER_KATAR_AVALON", name: "Укротитель ярости" },
+  { code: "2H_DAGGERPAIR_CRYSTAL", name: "Парные истребители" },
+  // Боевые шесты
+  { code: "2H_QUARTERSTAFF", name: "Боевой шест" },
+  { code: "2H_IRONCLADEDSTAFF", name: "Железный посох" },
+  { code: "2H_DOUBLEBLADEDSTAFF", name: "Острый шест" },
+  { code: "2H_COMBATSTAFF_MORGANA", name: "Посох черного монаха" },
+  { code: "2H_TWINSCYTHE_HELL", name: "Коса душ" },
+  { code: "2H_ROCKSTAFF_KEEPER", name: "Посох равновесия" },
+  { code: "2H_QUARTERSTAFF_AVALON", name: "Искатель Грааля" },
+  { code: "2H_DOUBLEBLADEDSTAFF_CRYSTAL", name: "Парные призрачные клинки" },
+  // Луки
+  { code: "2H_BOW", name: "Лук" },
+  { code: "2H_WARBOW", name: "Боевой лук" },
+  { code: "2H_LONGBOW", name: "Длинный лук" },
+  { code: "2H_LONGBOW_UNDEAD", name: "Шепчущий лук" },
+  { code: "2H_BOW_HELL", name: "Воющий лук" },
+  { code: "2H_BOW_KEEPER", name: "Лук Бадона" },
+  { code: "2H_BOW_AVALON", name: "Туманный пронзатель" },
+  { code: "2H_BOW_CRYSTAL", name: "Лук небесного странника" },
+  // Арбалеты
+  { code: "2H_CROSSBOW", name: "Арбалет" },
+  { code: "2H_CROSSBOWLARGE", name: "Тяжелый арбалет" },
+  { code: "MAIN_1HCROSSBOW", name: "Легкий арбалет" },
+  { code: "2H_REPEATINGCROSSBOW_UNDEAD", name: "Плачущий арбалет" },
+  { code: "2H_DUALCROSSBOW_HELL", name: "Самострелы" },
+  { code: "2H_CROSSBOWLARGE_MORGANA", name: "Осадный арбалет" },
+  { code: "2H_CROSSBOW_CANNON_AVALON", name: "Творец энергии" },
+  { code: "2H_DUALCROSSBOW_CRYSTAL", name: "Искрящиеся бластеры" },
+  // Огонь
+  { code: "MAIN_FIRESTAFF", name: "Огненный посох" },
+  { code: "2H_FIRESTAFF", name: "Большой огненный посох" },
+  { code: "2H_INFERNOSTAFF", name: "Адский посох" },
+  { code: "MAIN_FIRESTAFF_KEEPER", name: "Посох лесного пожара" },
+  { code: "2H_FIRESTAFF_HELL", name: "Посох серы" },
+  { code: "2H_INFERNOSTAFF_MORGANA", name: "Пылающий посох" },
+  { code: "2H_FIRE_RINGPAIR_AVALON", name: "Песнь рассвета" },
+  { code: "MAIN_FIRESTAFF_CRYSTAL", name: "Посох пламенного странника" },
+  // Лед
+  { code: "MAIN_FROSTSTAFF", name: "Морозный посох" },
+  { code: "2H_FROSTSTAFF", name: "Большой морозный посох" },
+  { code: "2H_GLACIALSTAFF", name: "Ледяной посох" },
+  { code: "MAIN_FROSTSTAFF_KEEPER", name: "Посох инея" },
+  { code: "2H_ICEGAUNTLETS_HELL", name: "Заледенелый посох" },
+  { code: "2H_ICECRYSTAL_UNDEAD", name: "Призма вечного холода" },
+  { code: "MAIN_FROSTSTAFF_AVALON", name: "Леденящий вой" },
+  { code: "2H_FROSTSTAFF_CRYSTAL", name: "Снежный посох" },
+  // Мистик
+  { code: "MAIN_ARCANESTAFF", name: "Мистический посох" },
+  { code: "2H_ARCANESTAFF", name: "Большой мистический посох" },
+  { code: "2H_ENIGMATICSTAFF", name: "Загадочный посох" },
+  { code: "MAIN_ARCANESTAFF_UNDEAD", name: "Ведьмовской посох" },
+  { code: "2H_ARCANESTAFF_HELL", name: "Оккультный посох" },
+  { code: "2H_ENIGMATICORB_MORGANA", name: "Средоточие злобы" },
+  { code: "2H_ARCANE_RINGPAIR_AVALON", name: "Песнь заката" },
+  { code: "2H_ARCANESTAFF_CRYSTAL", name: "Астральный посох" },
+  // Свет
+  { code: "MAIN_HOLYSTAFF", name: "Священный посох" },
+  { code: "2H_HOLYSTAFF", name: "Большой священный посох" },
+  { code: "2H_DIVINESTAFF", name: "Божественный посох" },
+  { code: "MAIN_HOLYSTAFF_MORGANA", name: "Посох жизни" },
+  { code: "2H_HOLYSTAFF_HELL", name: "Посох падших" },
+  { code: "2H_HOLYSTAFF_UNDEAD", name: "Посох искупления" },
+  { code: "MAIN_HOLYSTAFF_AVALON", name: "Благодатный посох" },
+  { code: "2H_HOLYSTAFF_CRYSTAL", name: "Посох возвышения" },
+  // Природа
+  { code: "MAIN_NATURESTAFF", name: "Древесный посох" },
+  { code: "2H_NATURESTAFF", name: "Большой древесный посох" },
+  { code: "2H_WILDSTAFF", name: "Дикий посох" },
+  { code: "MAIN_NATURESTAFF_KEEPER", name: "Друидский посох" },
+  { code: "2H_NATURESTAFF_KEEPER", name: "Друидский посох" },
+  { code: "2H_NATURESTAFF_HELL", name: "Посох порчи" },
+  { code: "2H_NATURESTAFF_AVALON", name: "Посох Железного корня" },
+  { code: "MAIN_NATURESTAFF_CRYSTAL", name: "Кузнечный посох" },
+  // Курсы
+  { code: "MAIN_CURSEDSTAFF", name: "Проклятый посох" },
+  { code: "2H_CURSEDSTAFF", name: "Большой проклятый посох" },
+  { code: "2H_DEMONICSTAFF", name: "Демонический посох" },
+  { code: "MAIN_CURSEDSTAFF_UNDEAD", name: "Гибельный посох" },
+  { code: "2H_SKULLORB_HELL", name: "Проклятый череп" },
+  { code: "2H_CURSEDSTAFF_MORGANA", name: "Посох обреченности" },
+  { code: "MAIN_CURSEDSTAFF_AVALON", name: "Призыватель теней" },
+  { code: "MAIN_CURSEDSTAFF_CRYSTAL", name: "Посох гниения" },
+  // Оборотни
+  { code: "2H_SHAPESHIFTER_SET1", name: "Посох бродяги" },
+  { code: "2H_SHAPESHIFTER_SET2", name: "Непреодолимый посох" },
+  { code: "2H_SHAPESHIFTER_SET3", name: "Первобытный посох" },
+  { code: "2H_SHAPESHIFTER_MORGANA", name: "Посох кровавой луны" },
+  { code: "2H_SHAPESHIFTER_HELL", name: "Посох порождения Ада" },
+  { code: "2H_SHAPESHIFTER_KEEPER", name: "Рунный посох Земли" },
+  { code: "2H_SHAPESHIFTER_AVALON", name: "Светоч" },
+  { code: "2H_SHAPESHIFTER_CRYSTAL", name: "Посох неподвижного взгляда" },
+];
+
+const CONSUMABLE_ITEMS = [
+  // Зелья (указаны все реально существующие тиры от T4 до T8)
+  { code: "POTION_HEAL", name: "Зелье здоровья", cat: "potion", tiers: [4, 6] },
+  { code: "POTION_ENERGY", name: "Зелье энергии", cat: "potion", tiers: [4, 6] },
+  { code: "POTION_RESIST", name: "Зелье защиты", cat: "potion", tiers: [5, 7] },
+  { code: "POTION_REVIVE", name: "Зелье гиганта", cat: "potion", tiers: [5, 7] },
+  { code: "POTION_COOLDOWN", name: "Зелье яда", cat: "potion", tiers: [4, 6, 8] },
+  { code: "POTION_SLOWFIELD", name: "Зелье вязкости", cat: "potion", tiers: [5, 7] },
+  { code: "POTION_CLEANSE", name: "Зелье очищения", cat: "potion", tiers: [5, 7] },
+  { code: "POTION_ACID", name: "Кислотное зелье", cat: "potion", tiers: [5, 7] },
+  { code: "POTION_BERSERK", name: "Зелье берсерка", cat: "potion", tiers: [4, 6, 8] },
+  { code: "POTION_LAVA", name: "Зелье адского пламени", cat: "potion", tiers: [4, 6, 8] },
+  { code: "POTION_TORNADO", name: "Смерч в бутылке", cat: "potion", tiers: [4, 6, 8] },
+  { code: "POTION_LIFEWARD", name: "Зелье защиты жизни", cat: "potion", tiers: [4, 6, 8] },
+  { code: "POTION_INVISIBILITY", name: "Зелье невидимости", cat: "potion", tiers: [8] },
+  { code: "POTION_GATHER", name: "Зелье собирателя", cat: "potion", tiers: [4, 6, 8] },
+
+  // Еда (все блюда с их реальными игровыми тирами от T4 до T8)
+  { code: "MEAL_SOUP", name: "Суп (капустный / моллюсковый)", cat: "food", tiers: [5] },
+  { code: "MEAL_SOUP_FISH", name: "Суп из моллюсков", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_SALAD", name: "Салат (картофельный / кракен)", cat: "food", tiers: [4, 6] },
+  { code: "MEAL_SALAD_FISH", name: "Салат с кракеном", cat: "food", tiers: [4, 6] },
+  { code: "MEAL_PIE", name: "Пирог (гусиный / свиной)", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_PIE_FISH", name: "Пирог с туманным окунем", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_OMELETTE", name: "Омлет (гусиный / свиной)", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_OMELETTE_AVALON", name: "Авалонский омлет", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_OMELETTE_FISH", name: "Крабовый омлет", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_OMELETTE_DRAGONAREA", name: "Омлет из драконьего лейфина", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_STEW", name: "Жаркое (козлятина / баранина / говядина)", cat: "food", tiers: [4, 6, 8] },
+  { code: "MEAL_STEW_AVALON", name: "Авалонское жаркое", cat: "food", tiers: [4, 6, 8] },
+  { code: "MEAL_STEW_FISH", name: "Жаркое из угря", cat: "food", tiers: [4, 6, 8] },
+  { code: "MEAL_SANDWICH", name: "Сэндвич (козлятина / баранина / говядина)", cat: "food", tiers: [4, 6, 8] },
+  { code: "MEAL_SANDWICH_AVALON", name: "Авалонский сэндвич", cat: "food", tiers: [4, 6, 8] },
+  { code: "MEAL_SANDWICH_FISH", name: "Сэндвич с громобоем", cat: "food", tiers: [4, 6, 8] },
+  { code: "MEAL_ROAST", name: "Жареная птица (цыпленок / гусь)", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_ROAST_FISH", name: "Жареный туманный окунь", cat: "food", tiers: [5, 7] },
+  { code: "MEAL_SPECIAL_FOOD_DRAKE_EGG", name: "Печенье из яиц дрейков", cat: "food", tiers: [8] }
+];
+
+// Регистрируем еду и зелья строго по их существующим тирам и зачарованиям (.0 - .3)
+CONSUMABLE_ITEMS.forEach(item => {
+  item.tiers.forEach(tier => {
+    for (let ench = 0; ench <= 3; ench++) {
+      const enchSuffix = ench === 0 ? "" : `@${ench}`;
+      ITEMS_DB.push({
+        id: `T${tier}_${item.code}${enchSuffix}`,
+        name: `${item.name} (T${tier}.${ench})`,
+        cat: item.cat
+      });
     }
   });
-}
+});
 
 registerItemGroup(CAPE_TYPES, "cape");
-registerItemGroup(CLOTH_ARMOR_TYPES, "armor");
+registerItemGroup(ARMOR_TYPES, "armor");
+registerItemGroup(HEAD_TYPES, "head");
+registerItemGroup(SHOES_TYPES, "shoes");
+registerItemGroup(OFFHAND_TYPES, "offhand");
+registerItemGroup(WEAPON_TYPES, "weapon");
+
+// Регистрируем еду и зелья (у них в игре зачарования от .0 до .3)
+CONSUMABLE_ITEMS.forEach(item => {
+  for (let ench = 0; ench <= 3; ench++) {
+    const enchSuffix = ench === 0 ? "" : `@${ench}`;
+    ITEMS_DB.push({
+      id: `${item.code}${enchSuffix}`,
+      name: `${item.name} (.${ench})`,
+      cat: item.cat
+    });
+  }
+});
 
 const MAIN_SLOTS = [
   { key: "bag", label: "Сумка", hidden: true },
@@ -288,9 +607,13 @@ function renderItemChoices() {
     const matchesCat = category === "all" || item.cat === category;
     const matchesQuery = item.name.toLowerCase().includes(query);
     const matchesTier = item.id.startsWith(`${tier}_`);
-    const matchesEnch = enchant === ""
+
+    // Для еды и зелий в игре максимальное зачарование .3 (если выбрано .4, показываем .3)
+    const isConsumable = item.cat === "potion" || item.cat === "food";
+    const effectiveEnch = (isConsumable && enchant === "@4") ? "@3" : enchant;
+    const matchesEnch = effectiveEnch === ""
       ? !item.id.includes("@")
-      : item.id.endsWith(enchant);
+      : item.id.endsWith(effectiveEnch);
 
     return matchesCat && matchesQuery && matchesTier && matchesEnch;
   });
@@ -303,6 +626,7 @@ function renderItemChoices() {
     list.appendChild(div);
   });
 }
+
 function selectItem(fullCode) {
   if (!activeTarget) return;
   const { memberIdx, type, key } = activeTarget;
