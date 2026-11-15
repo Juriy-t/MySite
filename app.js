@@ -271,9 +271,9 @@ const WEAPON_TYPES = [
   { code: "2H_NATURESTAFF", name: "Большой древесный посох" },
   { code: "2H_WILDSTAFF", name: "Дикий посох" },
   { code: "MAIN_NATURESTAFF_KEEPER", name: "Друидский посох" },
-  { code: "2H_NATURESTAFF_KEEPER", name: "Друидский посох" },
+  { code: "2H_NATURESTAFF_KEEPER", name: "Неудержимий посох" },
   { code: "2H_NATURESTAFF_HELL", name: "Посох порчи" },
-  { code: "2H_NATURESTAFF_AVALON", name: "Посох Железного корня" },
+  { code: "MAIN_NATURESTAFF_AVALON", name: "Посох Железного корня" },
   { code: "MAIN_NATURESTAFF_CRYSTAL", name: "Кузнечный посох" },
   // Курсы
   { code: "MAIN_CURSEDSTAFF", name: "Проклятый посох" },
