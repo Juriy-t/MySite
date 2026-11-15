@@ -334,6 +334,22 @@ const CONSUMABLE_ITEMS = [
   { code: "MEAL_SPECIAL_FOOD_DRAKE_EGG", name: "Печенье из яиц дрейков", cat: "food", tiers: "8" }
 ];
 
+const ITEMS_DB = [];
+
+function registerItemGroup(list, category) {
+  list.forEach(item => {
+    for (let tier = 4; tier <= 8; tier++) {
+      for (let ench = 0; ench <= 4; ench++) {
+        const enchSuffix = ench === 0 ? "" : `@${ench}`;
+        ITEMS_DB.push({
+          id: `T${tier}_${item.code}${enchSuffix}`,
+          name: `${item.name} (T${tier}.${ench})`,
+          cat: category
+        });
+      }
+    }
+  });
+}
 CONSUMABLE_ITEMS.forEach(item => {
   item.tiers.split(",").forEach(tier => {
     for (let ench = 0; ench <= 3; ench++) {
