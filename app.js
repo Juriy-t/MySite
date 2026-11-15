@@ -67,13 +67,16 @@ let party = JSON.parse(localStorage.getItem("albion_custom_party")) || [
 let activeTarget = null;
 let draggedItem = null;
 
-function getRenderUrl(itemCode) {
+function getRenderUrl(fullString, overrideQuality) {
+  var parts = fullString.split(":");
+  var itemCode = parts[0];
+  var quality = overrideQuality || parts[1] || "1";
+
   var host = "render." + "jesucristo69" + ".com";
-  var path = "/render/item/" + itemCode + ".webp?size=128";
+  var path = "/render/item/" + itemCode + ".webp?size=128&quality=" + quality;
   var original = "https://" + host + path;
   return "https://" + "wsrv.nl" + "/?url=" + encodeURIComponent(original) + "&output=png";
 }
-
 function startBuilder() {
   document.getElementById("welcomeScreen").style.display = "none";
   document.getElementById("builderScreen").classList.add("active");
@@ -189,7 +192,8 @@ function handleDrop(e, targetMemberIdx, targetType, targetKey) {
   }
 
   if (targetType === "equip") {
-    const itemObj = ITEMS_DB.find(i => i.id === draggedItem.code);
+    const cleanCode = draggedItem.code.split(":")[0];
+    const itemObj = ITEMS_DB.find(i => i.id === cleanCode);
     if (itemObj && itemObj.cat !== targetKey) {
       return;
     }
@@ -276,6 +280,7 @@ function renderItemChoices() {
   const category = document.getElementById("categorySelect").value;
   const tier = document.getElementById("tierSelect").value;
   const enchant = document.getElementById("enchantSelect").value;
+  const quality = document.getElementById("qualitySelect").value;
 
   list.innerHTML = "";
 
@@ -293,12 +298,11 @@ function renderItemChoices() {
   filtered.forEach(item => {
     const div = document.createElement("div");
     div.className = "item-option";
-    div.innerHTML = `<img src="${getRenderUrl(item.id)}" loading="lazy" alt="" /><span>${item.name}</span>`;
-    div.onclick = () => selectItem(item.id);
+    div.innerHTML = `<img src="${getRenderUrl(item.id, quality)}" loading="lazy" alt="" /><span>${item.name}</span>`;
+    div.onclick = () => selectItem(`${item.id}:${quality}`);
     list.appendChild(div);
   });
 }
-
 function selectItem(fullCode) {
   if (!activeTarget) return;
   const { memberIdx, type, key } = activeTarget;
