@@ -323,14 +323,14 @@ const CONSUMABLE_ITEMS = [
   { code: "MEAL_OMELETTE", name: "Омлет", cat: "food", tiers: "5,7" },
   { code: "MEAL_OMELETTE_AVALON", name: "Авалонский омлет", cat: "food", tiers: "5,7" },
   { code: "MEAL_OMELETTE_FISH", name: "Крабовый омлет", cat: "food", tiers: "7" },
-  { code: "MEAL_OMELETTE_DRAGONAREA", name: "Омлет из драконьего лейфина", cat: "food", tiers: "7" },
+  { code: "MEAL_OMELETTE_DRAGONAREA", name: "Омлет из лейфина", cat: "food", tiers: "5,7" },
   { code: "MEAL_STEW", name: "Жаркое", cat: "food", tiers: "4,6,8" },
   { code: "MEAL_STEW_AVALON", name: "Авалонское жаркое", cat: "food", tiers: "4,6,8" },
-  { code: "MEAL_STEW_FISH", name: "Жаркое из угря", cat: "food", tiers: "7" },
+  { code: "MEAL_STEW_FISH", name: "Жаркое из болотного угря", cat: "food", tiers: "4,6,8" },
   { code: "MEAL_SANDWICH", name: "Сэндвич", cat: "food", tiers: "4,6,8" },
   { code: "MEAL_SANDWICH_AVALON", name: "Авалонский сэндвич", cat: "food", tiers: "4,6,8" },
-  { code: "MEAL_SANDWICH_FISH", name: "Сэндвич с громобоем", cat: "food", tiers: "8" },
-  { code: "MEAL_ROAST", name: "Жареная птица", cat: "food", tiers: "5,7" },
+  { code: "MEAL_SANDWICH_FISH", name: "Сэндвич с громобоем", cat: "food", tiers: "4,6,8" },
+  { code: "MEAL_ROAST", name: "Жареная свинина", cat: "food", tiers: "5,7" },
   { code: "MEAL_ROAST_FISH", name: "Жареный туманный окунь", cat: "food", tiers: "7" },
   { code: "MEAL_SPECIAL_FOOD_DRAKE_EGG", name: "Печенье из яиц дрейков", cat: "food", tiers: "8" }
 ];
