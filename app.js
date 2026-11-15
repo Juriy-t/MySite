@@ -354,18 +354,6 @@ registerItemGroup(SHOES_TYPES, "shoes");
 registerItemGroup(OFFHAND_TYPES, "offhand");
 registerItemGroup(WEAPON_TYPES, "weapon");
 
-// Регистрируем еду и зелья (у них в игре зачарования от .0 до .3)
-CONSUMABLE_ITEMS.forEach(item => {
-  for (let ench = 0; ench <= 3; ench++) {
-    const enchSuffix = ench === 0 ? "" : `@${ench}`;
-    ITEMS_DB.push({
-      id: `${item.code}${enchSuffix}`,
-      name: `${item.name} (.${ench})`,
-      cat: item.cat
-    });
-  }
-});
-
 const MAIN_SLOTS = [
   { key: "bag", label: "Сумка", hidden: true },
   { key: "head", label: "Голова" },
