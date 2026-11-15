@@ -3,12 +3,12 @@ const CAPE_TYPES = [
   { code: "CAPEITEM_AVALON", name: "Авалонский плащ" },
   { code: "CAPEITEM_DEMON", name: "Демонический плащ" },
   { code: "CAPEITEM_FW_BRECILIEN", name: "Плащ Бресилиона" },
-  { code: "CAPEITEM_FW_BRIDGEWATCH", name: "Накидка Бриджуотча" },
+  { code: "CAPEITEM_FW_BRIDGEWATCH", name: "Плащ Бриджуотча" },
   { code: "CAPEITEM_FW_CAERLEON", name: "Плащ Карлеона" },
-  { code: "CAPEITEM_FW_FORTSTERLING", name: "Накидка Форт Стерлинга" },
-  { code: "CAPEITEM_FW_LYMHURST", name: "Накидка Люмхурста" },
-  { code: "CAPEITEM_FW_MARTLOCK", name: "Накидка Мартлока" },
-  { code: "CAPEITEM_FW_THETFORD", name: "Накидка Тетфорда" },
+  { code: "CAPEITEM_FW_FORTSTERLING", name: "Плащ Форт Стерлинга" },
+  { code: "CAPEITEM_FW_LYMHURST", name: "Плащ Лимхерста" },
+  { code: "CAPEITEM_FW_MARTLOCK", name: "Плащ Мартлока" },
+  { code: "CAPEITEM_FW_THETFORD", name: "Плащ Тетфорда" },
   { code: "CAPEITEM_HERETIC", name: "Плащ еретиков" },
   { code: "CAPEITEM_KEEPER", name: "Плащ хранителей" },
   { code: "CAPEITEM_MORGANA", name: "Плащ Морганы" },
@@ -16,21 +16,39 @@ const CAPE_TYPES = [
   { code: "CAPEITEM_UNDEAD", name: "Плащ нежити" }
 ];
 
+const CLOTH_ARMOR_TYPES = [
+  { code: "ARMOR_CLOTH_SET1", name: "Мантия ученого" },
+  { code: "ARMOR_CLOTH_SET2", name: "Мантия клирика" },
+  { code: "ARMOR_CLOTH_SET3", name: "Мантия чародея" },
+  { code: "ARMOR_CLOTH_ROYAL", name: "Королевская мантия" },
+  { code: "ARMOR_CLOTH_KEEPER", name: "Мантия друида" },
+  { code: "ARMOR_CLOTH_HELL", name: "Дьявольская мантия" },
+  { code: "ARMOR_CLOTH_MORGANA", name: "Мантия культиста" },
+  { code: "ARMOR_CLOTH_AVALON", name: "Мантия чистоты" },
+  { code: "ARMOR_CLOTH_FEY", name: "Мантия из чешуи фей" }
+];
+
 const ITEMS_DB = [];
 
-// Автоматически создаем все тиры (T4-T8) и зачарования (.0-.4) для каждого плаща
-CAPE_TYPES.forEach(cape => {
-  for (let tier = 4; tier <= 8; tier++) {
-    for (let ench = 0; ench <= 4; ench++) {
-      const enchSuffix = ench === 0 ? "" : `@${ench}`;
-      ITEMS_DB.push({
-        id: `T${tier}_${cape.code}${enchSuffix}`,
-        name: `${cape.name} (T${tier}.${ench})`,
-        cat: "cape"
-      });
+// Функция-помощник для генерации всех тиров (T4-T8) и зачарований (.0-.4)
+function registerItemGroup(list, category) {
+  list.forEach(item => {
+    for (let tier = 4; tier <= 8; tier++) {
+      for (let ench = 0; ench <= 4; ench++) {
+        const enchSuffix = ench === 0 ? "" : `@${ench}`;
+        ITEMS_DB.push({
+          id: `T${tier}_${item.code}${enchSuffix}`,
+          name: `${item.name} (T${tier}.${ench})`,
+          cat: category
+        });
+      }
     }
-  }
-});
+  });
+}
+
+// Заполняем базу плащами и тканевыми мантиями
+registerItemGroup(CAPE_TYPES, "cape");
+registerItemGroup(CLOTH_ARMOR_TYPES, "armor");
 
 const MAIN_SLOTS = [
   { key: "bag", label: "Сумка", hidden: true },
