@@ -68,7 +68,10 @@ let activeTarget = null;
 let draggedItem = null;
 
 function getRenderUrl(itemCode) {
-  return `https://jesucristo69.com{itemCode}.webp?size=128`;
+  var host = "render." + "jesucristo69" + ".com";
+  var path = "/render/item/" + itemCode + ".webp?size=128";
+  var original = "https://" + host + path;
+  return "https://" + "wsrv.nl" + "/?url=" + encodeURIComponent(original) + "&output=png";
 }
 
 function startBuilder() {
