@@ -296,47 +296,46 @@ const WEAPON_TYPES = [
 ];
 
 const CONSUMABLE_ITEMS = [
-  // Зелья (указаны все реально существующие тиры от T4 до T8)
-  { code: "POTION_HEAL", name: "Зелье здоровья", cat: "potion", tiers: [4, 6] },
-  { code: "POTION_ENERGY", name: "Зелье энергии", cat: "potion", tiers: [4, 6] },
-  { code: "POTION_RESIST", name: "Зелье защиты", cat: "potion", tiers: [5, 7] },
-  { code: "POTION_REVIVE", name: "Зелье гиганта", cat: "potion", tiers: [5, 7] },
-  { code: "POTION_COOLDOWN", name: "Зелье яда", cat: "potion", tiers: [4, 6, 8] },
-  { code: "POTION_SLOWFIELD", name: "Зелье вязкости", cat: "potion", tiers: [5, 7] },
-  { code: "POTION_CLEANSE", name: "Зелье очищения", cat: "potion", tiers: [5, 7] },
-  { code: "POTION_ACID", name: "Кислотное зелье", cat: "potion", tiers: [5, 7] },
-  { code: "POTION_BERSERK", name: "Зелье берсерка", cat: "potion", tiers: [4, 6, 8] },
-  { code: "POTION_LAVA", name: "Зелье адского пламени", cat: "potion", tiers: [4, 6, 8] },
-  { code: "POTION_TORNADO", name: "Смерч в бутылке", cat: "potion", tiers: [4, 6, 8] },
-  { code: "POTION_LIFEWARD", name: "Зелье защиты жизни", cat: "potion", tiers: [4, 6, 8] },
-  { code: "POTION_INVISIBILITY", name: "Зелье невидимости", cat: "potion", tiers: [8] },
-  { code: "POTION_GATHER", name: "Зелье собирателя", cat: "potion", tiers: [4, 6, 8] },
+  // Зелья
+  { code: "POTION_HEAL", name: "Зелье здоровья", cat: "potion", tiers: "4,6" },
+  { code: "POTION_ENERGY", name: "Зелье энергии", cat: "potion", tiers: "4,6" },
+  { code: "POTION_RESIST", name: "Зелье защиты", cat: "potion", tiers: "5,7" },
+  { code: "POTION_REVIVE", name: "Зелье гиганта", cat: "potion", tiers: "5,7" },
+  { code: "POTION_COOLDOWN", name: "Зелье яда", cat: "potion", tiers: "4,6,8" },
+  { code: "POTION_SLOWFIELD", name: "Зелье вязкости", cat: "potion", tiers: "5,7,8" },
+  { code: "POTION_CLEANSE", name: "Зелье очищения", cat: "potion", tiers: "6,8" },
+  { code: "POTION_ACID", name: "Кислотное зелье", cat: "potion", tiers: "6,8" },
+  { code: "POTION_BERSERK", name: "Зелье берсерка", cat: "potion", tiers: "6,8" },
+  { code: "POTION_LAVA", name: "Зелье адского пламени", cat: "potion", tiers: "6,8" },
+  { code: "POTION_TORNADO", name: "Смерч в бутылке", cat: "potion", tiers: "8" },
+  { code: "POTION_LIFEWARD", name: "Зелье защиты жизни", cat: "potion", tiers: "6,8" },
+  { code: "POTION_INVISIBILITY", name: "Зелье невидимости", cat: "potion", tiers: "8" },
+  { code: "POTION_GATHER", name: "Зелье собирателя", cat: "potion", tiers: "4,6,8" },
 
-  // Еда (все блюда с их реальными игровыми тирами от T4 до T8)
-  { code: "MEAL_SOUP", name: "Суп (капустный / моллюсковый)", cat: "food", tiers: [5] },
-  { code: "MEAL_SOUP_FISH", name: "Суп из моллюсков", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_SALAD", name: "Салат (картофельный / кракен)", cat: "food", tiers: [4, 6] },
-  { code: "MEAL_SALAD_FISH", name: "Салат с кракеном", cat: "food", tiers: [4, 6] },
-  { code: "MEAL_PIE", name: "Пирог (гусиный / свиной)", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_PIE_FISH", name: "Пирог с туманным окунем", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_OMELETTE", name: "Омлет (гусиный / свиной)", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_OMELETTE_AVALON", name: "Авалонский омлет", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_OMELETTE_FISH", name: "Крабовый омлет", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_OMELETTE_DRAGONAREA", name: "Омлет из драконьего лейфина", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_STEW", name: "Жаркое (козлятина / баранина / говядина)", cat: "food", tiers: [4, 6, 8] },
-  { code: "MEAL_STEW_AVALON", name: "Авалонское жаркое", cat: "food", tiers: [4, 6, 8] },
-  { code: "MEAL_STEW_FISH", name: "Жаркое из угря", cat: "food", tiers: [4, 6, 8] },
-  { code: "MEAL_SANDWICH", name: "Сэндвич (козлятина / баранина / говядина)", cat: "food", tiers: [4, 6, 8] },
-  { code: "MEAL_SANDWICH_AVALON", name: "Авалонский сэндвич", cat: "food", tiers: [4, 6, 8] },
-  { code: "MEAL_SANDWICH_FISH", name: "Сэндвич с громобоем", cat: "food", tiers: [4, 6, 8] },
-  { code: "MEAL_ROAST", name: "Жареная птица (цыпленок / гусь)", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_ROAST_FISH", name: "Жареный туманный окунь", cat: "food", tiers: [5, 7] },
-  { code: "MEAL_SPECIAL_FOOD_DRAKE_EGG", name: "Печенье из яиц дрейков", cat: "food", tiers: [8] }
+  // Еда
+  { code: "MEAL_SOUP", name: "Суп", cat: "food", tiers: "5" },
+  { code: "MEAL_SOUP_FISH", name: "Суп из моллюсков", cat: "food", tiers: "5" },
+  { code: "MEAL_SALAD", name: "Салат", cat: "food", tiers: "4,6" },
+  { code: "MEAL_SALAD_FISH", name: "Салат с кракеном", cat: "food", tiers: "6" },
+  { code: "MEAL_PIE", name: "Пирог", cat: "food", tiers: "5,7" },
+  { code: "MEAL_PIE_FISH", name: "Пирог с туманным окунем", cat: "food", tiers: "7" },
+  { code: "MEAL_OMELETTE", name: "Омлет", cat: "food", tiers: "5,7" },
+  { code: "MEAL_OMELETTE_AVALON", name: "Авалонский омлет", cat: "food", tiers: "5,7" },
+  { code: "MEAL_OMELETTE_FISH", name: "Крабовый омлет", cat: "food", tiers: "7" },
+  { code: "MEAL_OMELETTE_DRAGONAREA", name: "Омлет из драконьего лейфина", cat: "food", tiers: "7" },
+  { code: "MEAL_STEW", name: "Жаркое", cat: "food", tiers: "4,6,8" },
+  { code: "MEAL_STEW_AVALON", name: "Авалонское жаркое", cat: "food", tiers: "4,6,8" },
+  { code: "MEAL_STEW_FISH", name: "Жаркое из угря", cat: "food", tiers: "7" },
+  { code: "MEAL_SANDWICH", name: "Сэндвич", cat: "food", tiers: "4,6,8" },
+  { code: "MEAL_SANDWICH_AVALON", name: "Авалонский сэндвич", cat: "food", tiers: "4,6,8" },
+  { code: "MEAL_SANDWICH_FISH", name: "Сэндвич с громобоем", cat: "food", tiers: "8" },
+  { code: "MEAL_ROAST", name: "Жареная птица", cat: "food", tiers: "5,7" },
+  { code: "MEAL_ROAST_FISH", name: "Жареный туманный окунь", cat: "food", tiers: "7" },
+  { code: "MEAL_SPECIAL_FOOD_DRAKE_EGG", name: "Печенье из яиц дрейков", cat: "food", tiers: "8" }
 ];
 
-// Регистрируем еду и зелья строго по их существующим тирам и зачарованиям (.0 - .3)
 CONSUMABLE_ITEMS.forEach(item => {
-  item.tiers.forEach(tier => {
+  item.tiers.split(",").forEach(tier => {
     for (let ench = 0; ench <= 3; ench++) {
       const enchSuffix = ench === 0 ? "" : `@${ench}`;
       ITEMS_DB.push({
