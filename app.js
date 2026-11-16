@@ -384,7 +384,7 @@ const MAIN_SLOTS = [
 ];
 
 let party = JSON.parse(localStorage.getItem("albion_custom_party")) || [
-  { name: "Человек 1", equip: {}, swaps: [] }
+  { name: "Слот 1", equip: {}, swaps: [] }
 ];
 
 let activeTarget = null;
