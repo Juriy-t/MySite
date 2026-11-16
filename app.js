@@ -546,7 +546,7 @@ function handleDrop(e, targetMemberIdx, targetType, targetKey) {
   renderParty();
 }
 function addMember() {
-  party.push({ name: `Человек ${party.length + 1}`, equip: {}, swaps: [] });
+  party.push({ name: `Солот ${party.length + 1}`, equip: {}, swaps: [] });
   renderParty();
 }
 
